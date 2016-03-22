@@ -41,11 +41,10 @@
 
             echo $stmt;
 
-            $memID = "";
+            $memID = 2;
             
             // bind the parameters. This is the best way to prevent SQL injection hacks.
-            $stmt->bind_Param("s", $memID);
-
+            $stmt->bind_Param("i", $memID);
 
             // Execute the query
             $stmt->execute();
@@ -55,9 +54,6 @@
 
             // Get the number of rows returned
             $num = $result->num_rows;;
-
-            // Execute the query
-            $stmt->execute();
      
             //resultset
             $result = $stmt->get_result();
@@ -69,7 +65,6 @@
         else {
             echo "not working at all :(";
         }
-        */
 	?>
 
 
