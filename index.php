@@ -18,6 +18,8 @@
 
 	    $query = "SELECT * FROM qbandb.member";
 
+        echo "php is working";
+
         // prepare query for execution
         if($stmt = $con->prepare($query)){
              
