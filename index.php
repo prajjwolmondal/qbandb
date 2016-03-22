@@ -26,10 +26,12 @@
      
             /* resultset */
             $result = $stmt->get_result();
-
+            echo "working?";
             echo $result;
 
-
+        }
+        else {
+            echo "not working at all :(";
         }
 	?>
 
