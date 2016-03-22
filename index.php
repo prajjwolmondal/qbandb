@@ -16,7 +16,7 @@
 	    include_once 'navbar.php';
 	    include_once 'config/connection.php';
 
-        /*
+        
         if (mysqli_connect_errno())
         {
           echo "Failed to connect to MySQL: " . mysqli_connect_error();
@@ -24,7 +24,7 @@
         }
 
         echo "php is working";
-
+        /*
         $rows = mysqli_query($con,"SELECT * FROM booking;"); 
         echo $rows;
 
