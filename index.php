@@ -35,7 +35,7 @@
         }
         */
 
-        $query = "SELECT * FROM qbandb.member";
+        $query = "SELECT * FROM qbandb.member;";
 
         try {
 
