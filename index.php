@@ -53,7 +53,7 @@
             $result = $stmt->get_result();
 
             // Get the number of rows returned
-            $num = $result->num_rows;;
+            $num = $result->num_rows;
      
             //resultset
             $result = $stmt->get_result();
