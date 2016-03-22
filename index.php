@@ -16,17 +16,18 @@
 	    include_once 'navbar.php';
 	    include_once 'config/connection.php';
 
-	    $query = "SELECT * FROM qbandb.member";
 
         echo "php is working";
 
-        $rows = mysqli_query($con,"SELECT * FROM qbandb.member;"); 
+        $rows = mysqli_query($con,"SELECT * FROM member;"); 
 
         foreach($rows as $row) {
 
             echo $row['mem_id'];
         }
         /*
+        $query = "SELECT * FROM qbandb.member";
+
         // prepare query for execution
         if($stmt = $con->prepare($query)){
              
