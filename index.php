@@ -43,7 +43,7 @@
             try {
 
                 $stmt = $con->prepare($query);
-                
+
                 echo $stmt;
 
                 $memID = 2;
@@ -77,6 +77,8 @@
             catch (Exception $e) {
                 die();
             }
+
+        echo "syntax is correct";
 	?>
 
 
