@@ -39,9 +39,11 @@
         echo "PHP is working.";
 
         // prepare query for execution
-        if($stmt = $con->prepare($query)){
 
             try {
+
+                $stmt = $con->prepare($query);
+                
                 echo $stmt;
 
                 $memID = 2;
@@ -71,15 +73,10 @@
                 echo "working?";
                 echo $result;
             }
-            
+
             catch (Exception $e) {
                 die();
             }
-
-        }
-        else {
-            echo "not working at all :(";
-        }
 	?>
 
 
