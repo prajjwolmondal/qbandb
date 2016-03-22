@@ -20,13 +20,20 @@
 
         echo "php is working";
 
+        $rows = mysqli_query($con,"SELECT * FROM qbandb.member;"); 
+
+        foreach($rows as $row) {
+
+            echo $row['mem_id'];
+        }
+        /*
         // prepare query for execution
         if($stmt = $con->prepare($query)){
              
             // Execute the query
             $stmt->execute();
      
-            /* resultset */
+            //resultset
             $result = $stmt->get_result();
             echo "working?";
             echo $result;
@@ -35,6 +42,7 @@
         else {
             echo "not working at all :(";
         }
+        */
 	?>
 
 
