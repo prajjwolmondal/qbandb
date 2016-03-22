@@ -40,6 +40,8 @@
         if($stmt = $con->prepare($query)){
 
             echo $stmt;
+
+            $memID = "";
             
             // bind the parameters. This is the best way to prevent SQL injection hacks.
             $stmt->bind_Param("s", $memID);
@@ -59,7 +61,7 @@
      
             //resultset
             $result = $stmt->get_result();
-            
+
             echo "working?";
             echo $result;
 
