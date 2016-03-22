@@ -16,13 +16,13 @@
 	    include_once 'navbar.php';
 	    include_once 'config/connection.php';
 
-
-         if (mysqli_connect_errno())
-          {
+        /*
+        if (mysqli_connect_errno())
+        {
           echo "Failed to connect to MySQL: " . mysqli_connect_error();
           die();
-          }
-          
+        }
+
         echo "php is working";
 
         $rows = mysqli_query($con,"SELECT * FROM booking;"); 
@@ -33,17 +33,33 @@
             echo $row['mem_id'];
             echo $row['prop_id'];
         }
-        /*
+        */
         $query = "SELECT * FROM qbandb.member";
 
         // prepare query for execution
         if($stmt = $con->prepare($query)){
-             
+
+            echo $stmt;
+            
+            // bind the parameters. This is the best way to prevent SQL injection hacks.
+            $stmt->bind_Param("s", $memID);
+
+
+            // Execute the query
+            $stmt->execute();
+     
+            /* resultset */
+            $result = $stmt->get_result();
+
+            // Get the number of rows returned
+            $num = $result->num_rows;;
+
             // Execute the query
             $stmt->execute();
      
             //resultset
             $result = $stmt->get_result();
+            
             echo "working?";
             echo $result;
 
