@@ -35,6 +35,12 @@
         }
         */
 
+         if (mysqli_connect_errno())
+  {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  die();
+  }
+
         $query = "SELECT * FROM qbandb.member";
         echo "PHP is working.";
 
@@ -44,11 +50,6 @@
             $stmt = $con->prepare($query);
 
             echo $stmt;
-
-            $memID = 2;
-            
-            // bind the parameters. This is the best way to prevent SQL injection hacks.
-            $stmt->bindValue(1, $memID);
 
             // Execute the query
             $stmt->execute();
