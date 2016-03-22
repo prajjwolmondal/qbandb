@@ -3,7 +3,7 @@
 $host = "eu-cdbr-azure-west-d.cloudapp.net";
 $db_name = "qbandb";
 $username = "bd22e1627c7160";
-$password = "91bd711";
+$password = "91bad711";
 
 try {
     $con = new mysqli($host,$username,$password, $db_name);
