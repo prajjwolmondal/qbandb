@@ -34,49 +34,45 @@
             echo $row['prop_id'];
         }
         */
-        $query = "SELECT * FROM qbandb.member";
 
+        $query = "SELECT * FROM qbandb.member";
         echo "PHP is working.";
 
-        // prepare query for execution
+        try {
 
-            try {
+            // prepare query for execution
+            $stmt = $con->prepare($query);
 
-                $stmt = $con->prepare($query);
+            echo $stmt;
 
-                echo $stmt;
+            $memID = 2;
+            
+            // bind the parameters. This is the best way to prevent SQL injection hacks.
+            $stmt->bindValue(1, $memID);
 
-                $memID = 2;
-                
-                // bind the parameters. This is the best way to prevent SQL injection hacks.
-                $stmt->bindValue(1, $memID);
+            // Execute the query
+            $stmt->execute();
+     
+            /* resultset */
+            $result = $stmt->fetchAll();
 
-                // Execute the query
-                $stmt->execute();
-         
-                /* resultset */
-                $result = $stmt->get_result();
+            // Get the number of rows returned
+            $num = $result->num_rows;
 
-                // Get the number of rows returned
-                $num = $result->num_rows;
-
-                if($num>0) {
-                    echo "rows in this columns";
-                }
-                else {
-                    echo "no rows";
-                }
-         
-                //resultset
-                $result = $stmt->get_result();
-
-                echo "working?";
-                echo $result;
+            if($num>0) {
+                echo "rows in this columns";
+            }
+            else {
+                echo "no rows";
             }
 
-            catch (Exception $e) {
-                die();
-            }
+            echo "working?";
+            echo $result;
+        }
+
+        catch (Exception $e) {
+            die(var_dump($e));
+        }
 
         echo "syntax is correct";
 	?>
