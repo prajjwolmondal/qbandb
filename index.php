@@ -23,7 +23,7 @@
           die();
         }
 */
-        echo "php is working";
+        //echo "php is working";
         /*
         $rows = mysqli_query($con,"SELECT * FROM booking;"); 
         echo $rows;
