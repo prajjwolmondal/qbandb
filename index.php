@@ -17,7 +17,20 @@
 	    include_once 'config/connection.php';
 
 	    $query = "SELECT * FROM qbandb.member";
-        echo $query;
+
+        // prepare query for execution
+        if($stmt = $con->prepare($query)){
+             
+            // Execute the query
+            $stmt->execute();
+     
+            /* resultset */
+            $result = $stmt->get_result();
+
+            echo $result;
+
+
+        }
 	?>
 
 
