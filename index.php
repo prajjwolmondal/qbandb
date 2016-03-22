@@ -19,11 +19,13 @@
 
         echo "php is working";
 
-        $rows = mysqli_query($con,"SELECT * FROM member;"); 
+        $rows = mysqli_query($con,"SELECT * FROM booking;"); 
+        echo $rows;
 
         foreach($rows as $row) {
 
             echo $row['mem_id'];
+            echo $row['prop_id'];
         }
         /*
         $query = "SELECT * FROM qbandb.member";
