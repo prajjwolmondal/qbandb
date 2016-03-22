@@ -35,7 +35,7 @@
         }
         */
 
-        $query = "SELECT * FROM qbandb.member;";
+        $query = "SELECT * FROM qbandb.member";
 
         try {
 
@@ -48,10 +48,7 @@
             /* resultset */
             $result = $stmt->fetchAll();
 
-            // Get the number of rows returned
-            $num = $result->num_rows;
-
-            if($num > 0) {
+            if(count($result) > 0) {
                 echo "rows in this columns";
             }
             else {
