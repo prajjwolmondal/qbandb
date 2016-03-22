@@ -6,8 +6,8 @@ $username = "bd22e1627c7160";
 $password = "91bad711";
 
 try {
+    echo "working";
     $con = new mysqli($host,$username,$password, $db_name);
-    
 }
  
 // show error
