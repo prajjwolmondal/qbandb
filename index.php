@@ -41,34 +41,40 @@
         // prepare query for execution
         if($stmt = $con->prepare($query)){
 
-            echo $stmt;
+            try {
+                echo $stmt;
 
-            $memID = 2;
+                $memID = 2;
+                
+                // bind the parameters. This is the best way to prevent SQL injection hacks.
+                $stmt->bindValue(1, $memID);
+
+                // Execute the query
+                $stmt->execute();
+         
+                /* resultset */
+                $result = $stmt->get_result();
+
+                // Get the number of rows returned
+                $num = $result->num_rows;
+
+                if($num>0) {
+                    echo "rows in this columns";
+                }
+                else {
+                    echo "no rows";
+                }
+         
+                //resultset
+                $result = $stmt->get_result();
+
+                echo "working?";
+                echo $result;
+            }
             
-            // bind the parameters. This is the best way to prevent SQL injection hacks.
-            $stmt->bind_Param("i", $memID);
-
-            // Execute the query
-            $stmt->execute();
-     
-            /* resultset */
-            $result = $stmt->get_result();
-
-            // Get the number of rows returned
-            $num = $result->num_rows;
-
-            if($num>0) {
-                echo "rows in this columns";
+            catch (Exception $e) {
+                die();
             }
-            else {
-                echo "no rows";
-            }
-     
-            //resultset
-            $result = $stmt->get_result();
-
-            echo "working?";
-            echo $result;
 
         }
         else {
