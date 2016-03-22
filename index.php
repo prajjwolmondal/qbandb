@@ -36,6 +36,8 @@
         */
         $query = "SELECT * FROM qbandb.member";
 
+        echo "PHP is working.";
+
         // prepare query for execution
         if($stmt = $con->prepare($query)){
 
@@ -54,6 +56,13 @@
 
             // Get the number of rows returned
             $num = $result->num_rows;
+
+            if($num>0) {
+                echo "rows in this columns";
+            }
+            else {
+                echo "no rows";
+            }
      
             //resultset
             $result = $stmt->get_result();
