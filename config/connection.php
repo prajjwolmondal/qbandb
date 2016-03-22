@@ -1,6 +1,6 @@
 <?php
 // used to connect to the database
-$host = "eu-cdbr-azure-west-d.cloudapp.net";
+$host = "eu-cbr-azure-west-d.cloudapp.net";
 $db_name = "qbandb";
 $username = "bd22e1627c7160";
 $password = "91bad711";
