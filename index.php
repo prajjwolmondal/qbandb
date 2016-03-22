@@ -42,8 +42,6 @@
             // prepare query for execution
             $stmt = $con->prepare($query);
 
-            echo $stmt;
-
             // Execute the query
             $stmt->execute();
      
@@ -53,7 +51,7 @@
             // Get the number of rows returned
             $num = $result->num_rows;
 
-            if($num>0) {
+            if($num > 0) {
                 echo "rows in this columns";
             }
             else {
