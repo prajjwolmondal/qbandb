@@ -55,7 +55,8 @@
                 echo "no rows";
             }
 
-            echo "working?";
+            echo $result;
+            // echo "working?";
             echo $result;
         }
 
@@ -63,7 +64,7 @@
             die(var_dump($e));
         }
 
-        echo "syntax is correct";
+        // echo "syntax is correct";
 	?>
 
 
