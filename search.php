@@ -12,30 +12,18 @@
     </head>
 <body>
 
-	<?php
-	    include_once 'navbar.php';
+    <!-- NAVIGATION BAR -->
+    <?php
+        include_once 'navbar.php';
+    ?>
+
+    <div class="container">
+
+    <?php
 	    include_once 'config/connection.php';
-/*
-        
-        if (mysqli_connect_errno())
-        {
-          echo "Failed to connect to MySQL: " . mysqli_connect_error();
-          die();
-        }
-*/
-        //echo "php is working";
-        /*
-        $rows = mysqli_query($con,"SELECT * FROM booking;"); 
-        echo $rows;
 
-        foreach($rows as $row) {
-
-            echo $row['mem_id'];
-            echo $row['prop_id'];
-        }
-        */
-
-        $query = "SELECT * FROM qbandb.property";
+        $query = "  SELECT street_num, street_name, apt_num, dist_name, price, beds_avail
+                    FROM property natural join district";
 
         try {
 
@@ -45,17 +33,38 @@
             // Execute the query
             $stmt->execute();
      
-            if ($stmt->num_rows>0){
-                while ($row = $stmt->fetch_assoc()){
-                    echo "id: ".$row["prop_id"]."<br>";
-                }
-            }
-            else{
-                echo "No results";
+            $result = $stmt->fetchAll();
+
+            $resultString = "";
+            $resultString .= "<ul class=\"collection\">";
+
+            foreach ($result as $tuple) {
+
+                $resultString .= "<li class=\"collection-item avatar\">";
+
+                $address = $tuple['street_num'] . " " . $tuple['street_name'];
+                if ($tuple['apt_num'])
+                    $address .= " Apt #" . $tuple['apt_num']; // add apartment number if included
+                $district = $tuple['dist_name'];
+                $price = "$" . $tuple['price'];
+                $available = "Beds available: " . $tuple['beds_avail'];
+
+
+                $resultString .= <<<EOT
+            <img src="images/yuna.jpg" alt="" class="circle">
+            <span class="title">{$address}</span>
+            <p>{$district}</br>
+            {$price}</br>
+            {$available}
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+EOT;
+
+                $resultString .= "</li>";
             }
 
-            /* resultset */
-            // $result = $stmt->fetchAll();
+            echo $resultString;
+
         }
 
         catch (Exception $e) {
@@ -63,26 +72,7 @@
         }
 	?>
 
-
- <!-- dynamic content will be here -->
-<!--  <form name='login' id='login' action='index.php' method='post'>
-    <table border='0'>
-        <tr>
-            <td>Username</td>
-            <td><input type='text' name='username' id='username' /></td>
-        </tr>
-        <tr>
-            <td>Password</td>
-             <td><input type='password' name='password' id='password' /></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <input type='submit' id='loginBtn' name='loginBtn' value='Log In' /> 
-            </td>
-        </tr>
-    </table>
-</form> -->
+  </div>
 
 </body>
 </html>
