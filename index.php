@@ -65,16 +65,13 @@ EOT;
 
                 $resultString .= "</tr>";
             }
-
+            
             $resultString .= <<<EOT
 
         </tbody>
     </table>
 EOT;
             echo $resultString;
-
-
-
 
         }
         catch (Exception $e) {
