@@ -24,7 +24,39 @@
         <script src="property.js"></script>
         </head>
     <body>
-
+        <!-- PHP code for inserting new comment -->
+        <?php
+            include_once 'config/connection.php';
+            $currentMemID = 1;
+            $currentPropID = 2;
+            $date = new DateTime();
+            $currentDate = $date->format('Y-m-d');
+            if(isset($_POST['user_comment']) and isset($_POST['user_rating'])){
+                $comment = $_POST['user_comment'];
+                $newRating = $_POST['user_rating'];
+                $query = "INSERT into qbandb.comments 
+                          values ($currentMemID, $newRating, '$comment', NULL, $currentPropID, '$currentDate');";
+                try {
+                    // prepare query for execution
+                   $stmt = $con->prepare($query);
+                    // Execute the query
+                    $stmt->execute();
+                }catch (Exception $e){
+                    die(var_dump($e));
+                }
+                $query2 = " UPDATE property
+                SET sum_votes = sum_votes + $newRating, num_votes = num_votes + 1, overall_rating = sum_votes / num_votes
+                WHERE prop_id = $currentPropID;";
+                try {
+                    // prepare query for execution
+                   $stmt = $con->prepare($query2);
+                    // Execute the query
+                    $stmt->execute();
+                }catch (Exception $e){
+                    die(var_dump($e));
+                }
+            }
+        ?>
 
     	<?php
     	    include_once 'navbar.php';
