@@ -24,7 +24,117 @@
         <script src="property.js"></script>
         </head>
     <body>
-        
+
+
+    	<?php
+    	    include_once 'navbar.php';
+    	    include_once 'config/connection.php';
+    /*
+            
+            if (mysqli_connect_errno())
+            {
+              echo "Failed to connect to MySQL: " . mysqli_connect_error();
+              die();
+            }
+    */      $currentMemID = 3;
+            $propID = 2;
+            $query = 
+            "SELECT  mem_id, street_num, street_name, postal_code, type, num_rooms, beds_avail, overall_rating, price, dist_name, full_kitchen, laundry, shared_room, private_room, pool, close_to_transit, gym, first_name, last_name, overall_rating, about_prop
+            FROM property natural join district natural join member
+            WHERE prop_id=$propID";
+            $property_owner_id = 0;
+            try {
+
+                // prepare query for execution
+               $stmt = $con->prepare($query);
+
+                // Execute the query
+                $stmt->execute();
+
+                /* resultset */
+                $result = $stmt->fetchAll();
+                echo "<table border='1'>";
+                foreach ($result as $tuple){
+                    $property_owner_id = $tuple['mem_id'];
+                    echo "<tr><td> Address: ".$tuple['street_num']." ".$tuple['street_name']."</td>";
+                    echo "<td> Postal Code: ".$tuple['postal_code']."</td>";
+                    echo "<td> District: ".$tuple['dist_name']."</td>";
+                    echo "</tr><tr>";
+                    echo "<td> Total number of rooms: ".$tuple['num_rooms']."</td>";
+                    echo "<td> Price: ".$tuple['price']."</td>";
+                    echo "<td> Overall Rating: ".$tuple['overall_rating']."</td>";    
+                    echo "<td> Property Type: ".$tuple['type']."</td>";
+                    echo "<td> Beds Available: ".$tuple['beds_avail']."</td></tr>";
+                    echo "<tr> ";
+                    echo "<td> About Property: </td>";
+                    echo "<td>".$tuple['about_prop']."</td>";
+                    echo "</tr>";
+                    echo "<tr> <td>Ammenities: </td></tr>";
+                    echo "<tr><td>";
+                    if($tuple['full_kitchen']=1){
+                        echo "<br> Full Kitchen</br>";
+                    }
+                    if($tuple['laundry']=1){
+                        echo "<br> Laundry</br>";
+                    }
+                    if($tuple['shared_room']=1){
+                        echo "<br> Shared Room</br>";
+                    }
+                    if($tuple['private_room']=1){
+                        echo "<br> Private Room</br>";
+                    }
+                    if($tuple['pool']=1){
+                        echo "<br> Pool</br>";
+                    }
+                    if($tuple['close_to_transit']=1){
+                        echo "<br> Close to transit</br>";
+                    }
+                    if($tuple['gym']=1){
+                        echo "<br> Gym</br>";
+                    }
+                }
+            } catch (Exception $e) {
+                die(var_dump($e));
+            }   // End of try/catch
+
+            $propID = 2;
+            $query = "SELECT first_name, last_name, date_added, comment, reply, rating
+                        FROM  comments natural join member
+                        WHERE prop_id = $propID";
+            try{
+                // prepare query for execution
+                $stmt = $con->prepare($query);
+                // Execute the query
+                $stmt->execute();
+                /* resultset */
+                $result = $stmt->fetchAll();
+                echo "<table boder=1>";
+                echo "<tr><th>Reviews</th></tr>";
+                foreach ($result as $tuple){
+                    echo "<tr><td>";
+                    echo "Rating: ".$tuple['rating']."<br>";
+                    echo "Comment: ".$tuple['comment']."<br>";
+                    echo "Comment added by: ".$tuple['first_name'].$tuple['last_name']." on: ".$tuple['date_added']."<br>";
+                    if ($tuple['reply']!=NULL){
+                        echo "Owner Reply: ".$tuple['reply'];
+                        echo "</td></tr>";
+                    }
+                    else{
+                        if ($property_owner_id==$currentMemID){
+                            echo '<div class="owner_reply">';
+                            echo "<button class='btn waves-effect waves-light' type='submit' id='btn' onclick='showReply()'>Reply?";
+                                echo '<i class="material-icons right">trending_flat</i>';
+                            echo '</button>';
+                            // echo '<button onclick="showReply()">Click me</button>';
+                            echo '</div>';
+                        }
+                    }
+                }
+                echo "</table>";
+            } catch (Exception $e){
+                die(var_dump($e));
+            }
+    	?>
 <!-- Rating Form -->
   <div class="row">
     <form class="col s12" action="property.php" method="post">
