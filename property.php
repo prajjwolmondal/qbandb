@@ -22,7 +22,6 @@
             $('#comments').trigger('autoresize');
         </script>
         <script src="property.js"></script>
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         </head>
     <body>
         <!-- PHP code for inserting new comment -->
