@@ -26,6 +26,7 @@
     <body>
         <!-- PHP code for inserting new comment -->
         <?php
+            include_once 'navbar.php';
             include_once 'config/connection.php';
             $currentMemID = 1;
             $currentPropID = 2;
@@ -59,8 +60,6 @@
         ?>
 
     	<?php
-    	    include_once 'navbar.php';
-    	    include_once 'config/connection.php';
     /*
             
             if (mysqli_connect_errno())
@@ -69,7 +68,7 @@
               die();
             }
     */      $currentMemID = 3;
-            $propID = 2;
+            $propID = $_GET['id'];
             $query = 
             "SELECT  mem_id, street_num, street_name, postal_code, type, num_rooms, beds_avail, overall_rating, price, dist_name, full_kitchen, laundry, shared_room, private_room, pool, close_to_transit, gym, first_name, last_name, overall_rating, about_prop
             FROM property natural join district natural join member

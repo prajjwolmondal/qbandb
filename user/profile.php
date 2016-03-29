@@ -56,7 +56,7 @@
                 die(var_dump($e));
             }   // End of try/catch
 
-            $query = "SELECT  street_num, street_name, apt_num, overall_rating FROM `property` natural join `member` WHERE mem_id = $currentMemID";
+            $query = "SELECT  prop_id, street_num, street_name, apt_num, overall_rating FROM `property` natural join `member` WHERE mem_id = $currentMemID";
             try{
                 // prepare query for execution
                 $stmt = $con->prepare($query);
@@ -78,6 +78,10 @@
                     echo "Rating: ";
                     echo "<i class='material-icons'>grade</i>".$tuple['overall_rating'];
                     // echo "<i class='tiny material-icons'>star_rate</i>".$tuple['overall_rating'];
+                    echo "</td></tr>";
+                    echo "<tr><td>";
+                    echo "<a href='../property.php?id={$tuple['prop_id']}'>";
+                    echo "Go to property"."</a>";
                     echo "</td></tr>";
                     echo "<br>";
                 }
