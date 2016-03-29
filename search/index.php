@@ -165,12 +165,12 @@
 
         <div class="row">
 
-            <button class="btn searchBtn" type="submit" value="search">search <i class="material-icons">search</i></button>
+            <button class="btn searchBtn" type="submit" value="search" onClick="window.location='#results';">search <i class="material-icons">search</i></button>
 
         </div>
         <div class="row">
         
-            <h3>Results</h3>
+            <h3 id="results">Results</h3>
 
         </div>
         <div class="row">
