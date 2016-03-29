@@ -23,8 +23,9 @@
   <body>
 
 	<?php
-     include_once 'navbar.php';
-     include_once 'config/connection.php';
+    include_once 'navbar.php';
+    echo navbar(0);
+    include_once 'config/connection.php';
 	?>
 
 
