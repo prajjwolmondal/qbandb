@@ -1,4 +1,176 @@
+<script>
+
+
+    $(document).ready(function(){
+        // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+        $('.modal-trigger').leanModal();
+
+        $('#loginNav').click(function(){
+    		$('#emailLogin').removeClass('valid invalid');
+    		$('#emailLogin').focus();
+
+    		$('#passwordLogin').removeClass('valid invalid');
+        });
+
+        // make clicking logout link trigger click on hidden input element
+        // to trigger form
+        $('#logoutBtn').click(function(){ 
+    		$('#hiddenLogout').click();
+    		var val = $('#hiddenLogout').attr('name');
+        });
+
+    });
+
+    function failedLogin(emailLogin) {
+
+    	$('.errorMessage').text('Email/password combination not recognized. Login failed. :(');
+    	$('#modal1').openModal({
+      		in_duration: 300, // Transition in duration
+    	});
+
+    	$('#emailLogin').val(emailLogin);
+    	$('#emailLogin').addClass('invalid');
+
+    	$('#passwordLogin').focus();
+    	$('#passwordLogin').addClass('invalid');
+    	$('#passwordLogin').attr('autofocus', true);
+            
+    }
+
+</script>
+
+<!-- Login Modal -->
+<div id="modal1" class="modal">
+    <div class="row">
+        <div class="col s8 offset-s2">
+
+        	<br/>
+            <h3>Login</h3>
+
+            <!-- Error message -->
+            <div class="row" >
+            	<div class="col s12 errorMessage" style="color: red;">
+            	</div>
+            </div>
+
+    		<!-- Login form -->
+            <form class="col s12" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+              <div class="row">
+                <div class="input-field col s1">
+                    <i class="material-icons">account_circle</i>
+                </div>
+                <div class="input-field col s11">
+                  <input id="emailLogin" type="email" name="email" class="validate">
+                  <label id="emailLoginLabel" for="emailLogin" class="">Email</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="passwordLogin" type="password" name="password" class="validate">
+                  <label for="passwordLogin">Password</label>
+                </div>
+              </div>
+              <div class="row">
+                <button class="btn modal-action waves-effect waves-light" name='loginBtn' type='submit'>Login </button>
+              </div>
+              <div class="row">
+                Don't have an account? 
+                <a href="{$directoryString}register.php">Register</a>.
+                <br/>
+              </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <?php
+
+// Create a user session or resume an existing one
+session_start ();
+
+echo submitLoginLogout();
+
+// UNCOMMENT for DEBUGGING
+//echo $_SERVER['REQUEST_URI'];
+
+/*
+// UNCOMMENT for DEBUGGING
+foreach ($_POST as $val) {
+	echo $val;
+}
+*/
+
+function submitLoginLogout () {
+
+    $resultString = "";
+
+    // if not already logged in and login requested
+    // former prevents another "login" on refresh
+    if (!isset($_SESSION['mem_id']) && isset($_POST['loginBtn'])) {
+        
+
+        include 'config/connection.php';
+
+        $query = "  SELECT  first_name, mem_id, email, password
+                    FROM    member 
+                    WHERE   email=:email AND password=:password";
+
+        try {
+        
+            // echo $query; // UNCOMMENT for DEBUGGING
+
+            // prepare query for execution
+            $stmt = $con->prepare($query);
+
+            // bind parameters
+            $stmt->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
+
+            $stmt->bindParam(':password', $_POST['password'], PDO::PARAM_STR);
+
+            // Execute the query
+            $stmt->execute();
+
+            $numRows = $stmt->rowCount();
+
+            // username and password do not match
+            if ($numRows <= 0) {
+                $resultString .= "<script>failedLogin(\"{$_POST['email']}\");</script>";
+            }
+            else {
+                $myrow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                // set session variables
+                $_SESSION['mem_id'] = $myrow['mem_id'];
+
+                // display message
+                $resultString .= "<script>Materialize.toast(\"Welcome back {$myrow['first_name']}!\", 1500)</script>";
+            }
+
+
+        }
+        catch (Exception $e) {
+            die(var_dump($e));
+        }
+    }
+    // if logged in and log out clicked
+    else if (isset($_SESSION['mem_id']) && isset($_POST['logoutBtn'])) {
+        
+        $resultString .= "<script>Materialize.toast(\"Logged out successfully.\", 1500)</script>"; // display message
+
+		// end session
+		unset($_SESSION['mem_id']);
+		session_destroy();
+
+		// send to index.php if current page is dashboard or admin
+		$currentPage = htmlspecialchars($_SERVER['REQUEST_URI']);
+		if ($currentPage == '/qbandb/dashboard.php' || $currentPage == '/qbandb/admin.php') {
+			header("Location: /qbandb/index.php");
+		}
+    }
+    
+    return $resultString;
+}
+
 function navbar($directoryLevel) {
 
 	$directoryString = "";
@@ -7,22 +179,64 @@ function navbar($directoryLevel) {
 	}
 	$directoryString .= "./";
 
-	$returnString = <<<EOT
+
+	$returnString = "";
+	$returnString .= <<<EOT
 	<nav>
 	  <div class="nav-wrapper teal lighten-2">
 	    <a href="{$directoryString}" class="brand-logo">Queen's BnB</a>
-	    <form class="col s12" action="{$directoryString}logout-ajax.php" method="post">
 		    <ul id="nav-mobile" class="right hide-on-med-and-down">
-		      <li><a href="{$directoryString}search">Search Listings</a></li>
-		      <li><a href="{$directoryString}dashboard.php">Dashboard</a></li>
-		      <li><a href="{$directoryString}register.php">Register</a></li>
-		      <li><a id="logoutBtn" name="logout" value="logout" type="submit" onClick="javascript:document.forms[0].submit();">Log out</a></li>
-		    </ul>
-		</form>
-	  </div>
+EOT;
+
+
+	$navbarLinks = 	[
+						"search/" => "Search Listings",
+						"dashboard.php" => "Dashboard",
+					];
+
+	foreach ($navbarLinks as $page => $pageName) {
+		$currentPage = htmlspecialchars($_SERVER['REQUEST_URI']);
+
+		if (("/qbandb/" . $page) != $currentPage) { // if not current page
+			$returnString .= <<<EOT
+				<li><a href="{$directoryString}{$page}" class="waves-effect waves-light">{$pageName}</a></li>
+EOT;
+		}
+		else { // if this is the current page
+			$returnString .= <<<EOT
+				<li class="active" style="font-weight: bold;"><a href="{$directoryString}{$page}" class="waves-effect waves-light">{$pageName}</a></li>
+EOT;
+		}
+	}
+
+    // if logged in, show log out button
+    if (isset($_SESSION['mem_id'])) {
+	
+    	$currentPage = htmlspecialchars($_SERVER['REQUEST_URI']);
+
+		$returnString .= <<<EOT
+		    	<li>
+	    			<form class="col s12" action="{$currentPage}" method="post">
+						<input id="hiddenLogout" type="submit" name="logoutBtn" style="display: none;"/>
+	    				<a id="logoutBtn" class="waves-effect waves-light" type="submit" >Log out</a>
+					</form>
+				</li>
+EOT;
+	}
+	else { // if not logged in, show register button
+		$returnString .= <<<EOT
+		    	<li><a href="{$directoryString}register.php" class="waves-effect waves-light">Register</a></li>
+		    	<li><a id="loginNav" class="waves-effect waves-light modal-trigger" href="#modal1">Login</a></li>
+EOT;
+	}
+
+	$returnString .= <<<EOT
+		    </ul>        
+		</div>
 	</nav>
 EOT;
 	return $returnString;
 }
+
 
 ?>
