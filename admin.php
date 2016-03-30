@@ -95,13 +95,16 @@
                         $stmt->execute();
                         $result = $stmt->fetchAll();
                         echo "<table border=1><caption>Booking Summary</caption>";
-                        echo "<tr><th>Date Booked</th><th>Period</th><th>Status</th><th>Street Number</th><th>Street Name</th></tr>";
+                        echo "<tr><th>Date Booked</th><th>Period</th><th>Status</th><th>Address </th><th> Link </th></tr>";
                         foreach ($result as $tuple){
                             echo "<tr><td>".$tuple['date_booked']."</td>";
                             echo "<td>".$tuple['period']."</td>";
                             echo "<td>".$tuple['status']."</td>";
-                            echo "<td>".$tuple['street_num']."</td>";
-                            echo "<td>".$tuple['street_name']."</td>";
+                            echo "<td>".$tuple['street_num']." ".$tuple['street_name']."</td>";
+                            echo "<td>";
+                            echo "<a href='property.php?id={$tuple['prop_id']}'>";
+                            echo "Go to property"."</a>";
+                            echo "</td>";
                         }
                         echo "</table>";
                     }catch (Exception $e){
@@ -118,13 +121,12 @@
                         $stmt->execute();
                         $result = $stmt->fetchAll();
                         echo "<table border=1><caption>Booking Summary</caption>";
-                        echo "<tr><th>Date Booked</th><th>Period</th><th>Status</th><th>Street Number</th><th>Street Name</th></tr>";
+                        echo "<tr><th>Date Booked</th><th>Period</th><th>Status</th><th>Address </th></tr>";
                         foreach ($result as $tuple){
                             echo "<tr><td>".$tuple['date_booked']."</td>";
                             echo "<td>".$tuple['period']."</td>";
                             echo "<td>".$tuple['status']."</td>";
-                            echo "<td>".$tuple['street_num']."</td>";
-                            echo "<td>".$tuple['street_name']."</td>";
+                            echo "<td>".$tuple['street_num']." ".$tuple['street_name']."</td>";
                         }
                         echo "</table>";
                     }catch (Exception $e){
@@ -140,14 +142,17 @@
                         $stmt->execute();
                         $result = $stmt->fetchAll();
                         echo "<table border=1><caption>Comments Summary</caption>";
-                        echo "<tr><th>Date Added</th><th>Comment</th><th>Reply</th><th>Property ID</th><th>Street Number</th><th>Street Name</th></tr>";
+                        echo "<tr><th>Date Added</th><th>Comment</th><th>Reply</th><th>Property ID</th><th>Address</th><th>Link</th></tr>";
                         foreach ($result as $tuple){
                             echo "<tr><td>".$tuple['date_added']."</td>";
                             echo "<td>".$tuple['comment']."</td>";
                             echo "<td>".$tuple['reply']."</td>";
                             echo "<td>".$tuple['prop_id']."</td>";
-                            echo "<td>".$tuple['street_num']."</td>";
-                            echo "<td>".$tuple['street_name']."</td>";
+                            echo "<td>".$tuple['street_num']." ".$tuple['street_name']."</td>";
+                            echo "<td>";
+                            echo "<a href='property.php?id={$tuple['prop_id']}'>";
+                            echo "Go to property"."</a>";
+                            echo "</td>";
                         }
                         echo "</table>";
                     }catch (Exception $e){
@@ -200,14 +205,17 @@
                         $stmt->execute();
                         $result = $stmt->fetchAll();
                         echo "<table border=1><caption>Booking Summary</caption>";
-                        echo "<tr><th>Date Booked</th><th>Period</th><th>Status</th><th>Property ID</th><th>Street Number</th><th>Street Name</th></tr>";
+                        echo "<tr><th>Date Booked</th><th>Period</th><th>Status</th><th>Property ID</th><th>Address</th><th>Link</th></tr>";
                         foreach ($result as $tuple){
                             echo "<tr><td>".$tuple['date_booked']."</td>";
                             echo "<td>".$tuple['period']."</td>";
                             echo "<td>".$tuple['status']."</td>";
                             echo "<td>".$tuple['prop_id']."</td>";
-                            echo "<td>".$tuple['street_num']."</td>";
-                            echo "<td>".$tuple['street_name']."</td>";
+                            echo "<td>".$tuple['street_num']." ".$tuple['street_name']."</td>";
+                            echo "<td>";
+                            echo "<a href='property.php?id={$tuple['prop_id']}'>";
+                            echo "Go to property"."</a>";
+                            echo "</td>";
                         }
                         echo "</table>";
                     }catch (Exception $e){

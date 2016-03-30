@@ -22,17 +22,17 @@
             $('#comments').trigger('autoresize');
         </script>
         <script src="property.js"></script>
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         </head>
     <body>
         <!-- PHP code for inserting new comment -->
         <?php
+            include_once 'navbar.php';
             include_once 'config/connection.php';
             $currentMemID = 1;
             $currentPropID = 2;
             $date = new DateTime();
             $currentDate = $date->format('Y-m-d');
-            if(isset($_POST['user_comment']) and isset(($_POST['user_rating']))){
+            if(isset($_POST['user_comment']) and isset($_POST['user_rating'])){
                 $comment = $_POST['user_comment'];
                 $newRating = $_POST['user_rating'];
                 $query = "INSERT into qbandb.comments 
@@ -60,8 +60,6 @@
         ?>
 
     	<?php
-    	    include_once 'navbar.php';
-    	    include_once 'config/connection.php';
     /*
             
             if (mysqli_connect_errno())
@@ -70,7 +68,7 @@
               die();
             }
     */      $currentMemID = 3;
-            $propID = 2;
+            $propID = $_GET['id'];
             $query = 
             "SELECT  mem_id, street_num, street_name, postal_code, type, num_rooms, beds_avail, overall_rating, price, dist_name, full_kitchen, laundry, shared_room, private_room, pool, close_to_transit, gym, first_name, last_name, overall_rating, about_prop
             FROM property natural join district natural join member
