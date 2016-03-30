@@ -91,7 +91,9 @@ session_start ();
 echo submitLoginLogout();
 
 // UNCOMMENT for DEBUGGING
-//echo $_SERVER['REQUEST_URI'];
+echo "PHP_SELF: " . $_SERVER['PHP_SELF'] . "<br/>";
+echo "REQUEST_URI: " . $_SERVER['REQUEST_URI'] . "<br/>";
+echo "SCRIPT_NAME: " . $_SERVER['SCRIPT_NAME'] . "<br/>";
 
 /*
 // UNCOMMENT for DEBUGGING
@@ -195,7 +197,7 @@ EOT;
 					];
 
 	foreach ($navbarLinks as $page => $pageName) {
-		$currentPage = htmlspecialchars($_SERVER['REQUEST_URI']);
+		$currentPage = htmlspecialchars($_SERVER['PHP_SELF']);
 
 		if (("/qbandb/" . $page) != $currentPage) { // if not current page
 			$returnString .= <<<EOT
@@ -212,7 +214,7 @@ EOT;
     // if logged in, show log out button
     if (isset($_SESSION['mem_id'])) {
 	
-    	$currentPage = htmlspecialchars($_SERVER['REQUEST_URI']);
+    	$currentPage = htmlspecialchars($_SERVER['PHP_SELF']);
 
 		$returnString .= <<<EOT
 		    	<li>
