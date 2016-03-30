@@ -199,7 +199,9 @@ EOT;
 	foreach ($navbarLinks as $page => $pageName) {
 		$currentPage = htmlspecialchars($_SERVER['PHP_SELF']);
 
-		if (("/qbandb/" . $page) != $currentPage) { // if not current page
+		// if not current page, make it a link
+		//if (("/qbandb/" . $page) != $currentPage) { // for simon when developing on his localhost
+		if (("/" . $page ) != $currentPage) { // for the server
 			$returnString .= <<<EOT
 				<li><a href="{$directoryString}{$page}" class="waves-effect waves-light">{$pageName}</a></li>
 EOT;
