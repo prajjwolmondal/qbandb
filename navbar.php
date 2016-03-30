@@ -194,7 +194,7 @@ EOT;
 
 
 	$navbarLinks = 	[
-						"search/" => "Search Listings",
+						"search/index.php" => "Search Listings",
 						"dashboard.php" => "Dashboard",
 					];
 
