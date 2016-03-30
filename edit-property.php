@@ -24,7 +24,8 @@
 <body>
 
     <?php
-        include_once '../navbar.php'; // include navbar
+        include_once './navbar.php'; // include navbar
+        echo navbar(0);
     ?>
     <div class="container">
 

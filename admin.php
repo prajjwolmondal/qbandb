@@ -24,7 +24,12 @@
         <script src="admin.js"></script>
         </head>
     <body>
-        <?php include_once 'navbar.php'; ?>
+        <?php 
+
+            include_once 'navbar.php'; 
+            echo navbar(0);
+            
+        ?>
         <h3> Welcome to the admin page </h3>
         <!-- Form -->
         <div class="row">

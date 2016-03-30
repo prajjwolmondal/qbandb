@@ -150,15 +150,15 @@ $(document).ready(function(){
         }
 
         var ajaxurl = 'search-ajax.php',
-        data =  {	'action': clickBtnValue,
-                    'address' : address,
-                    'beds' : beds,
-                    'rooms' : rooms,
-        			'price' : price,
-        			'rating' : rating,
-                    'district' : district,
-        			'features' : features
-        		};
+            data =  {	'action': clickBtnValue,
+                        'address' : address,
+                        'beds' : beds,
+                        'rooms' : rooms,
+            			'price' : price,
+            			'rating' : rating,
+                        'district' : district,
+            			'features' : features
+            		};
 
         $.post(ajaxurl, data, function (response) {
 
