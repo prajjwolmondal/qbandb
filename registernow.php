@@ -33,6 +33,8 @@
 	session_start ();
 
 	$_SESSION['mem_id'] = $memid;
+	$_SESSION['first_name'] = $fname;
+	$_SESSION['last_name'] = $lname;
 
 
    $query2= "INSERT INTO qbandb.member values ($memid+1, 0, '$fname', '$lname', $degree, $faculty, '$phone', $year, '$about', '$email', '$pass', '$credit', $expiry, $cvv);";
