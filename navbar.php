@@ -214,6 +214,7 @@ EOT;
     if (isset($_SESSION['mem_id'])) {
         $navbarLinks["dashboard.php"] = "Dashboard";
         $navbarLinks["user/profile.php?id={$_SESSION['mem_id']}"] = "{$_SESSION['first_name']}";
+        $navbarLinks["admin.php"] = " &nbsp; ";
     }
 
 	foreach ($navbarLinks as $page => $pageName) {
