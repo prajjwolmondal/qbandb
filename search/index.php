@@ -29,7 +29,7 @@
 <body>
 
     <?php
-        include_once './search.php';
+        include_once '../getFunctions.php';
 
         include_once '../navbar.php';
         echo navbar(1);
@@ -102,7 +102,7 @@
                     <select id="selectType">
                       <option value="-1" selected>All types</option>
                         <?php
-                            $typeArr = getTypes();
+                            $typeArr = getTypes(1);
                             foreach ($typeArr as $type) {
                                 echo "<option>{$type['type']}</option>";
                             }
@@ -117,7 +117,7 @@
                     <select id='selectDistricts'>
                         <option value="-1" selected>All districts</option>
                         <?php
-                            $distArr = getDistricts();
+                            $distArr = getDistricts(1);
                             foreach ($distArr as $dist) {
                                 echo "<option value=\"{$dist['dist_id']}\">{$dist['dist_name']}</option>";
                             }

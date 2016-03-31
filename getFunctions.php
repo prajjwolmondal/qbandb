@@ -33,6 +33,8 @@
             $stmt->execute();
      
             $result = $stmt->fetchAll();
+            
+            $con = null;
 
             return $result;
         }
@@ -65,6 +67,8 @@
             $stmt->execute();
      
             $result = $stmt->fetchAll();
+
+            $con = null;
 
             return $result;
         }
