@@ -1,14 +1,26 @@
 <?php
 
-    function getDistricts () {
+    function getDirectoryString ($directoryLevel) {
+
+        $directoryString = "";
+        for ($i = 0; $i < $directoryLevel; $i += 1) {
+            $directoryString .= "../";
+        }
+        $directoryString .= "./";
+
+        return $directoryString;
+    }
+
+    function getDistricts ($directoryLevel) {
     
-        include '../config/connection.php';
+        $dirString = getDirectoryString($directoryLevel);
+
+        include $dirString . 'config/connection.php';
 
         $query =    "   SELECT * 
                         FROM district 
                         GROUP BY dist_name ASC
                     ";
-
 
         try {
         
@@ -30,9 +42,11 @@
         }
     }
 
-    function getTypes () {
+    function getTypes ($directoryLevel) {
     
-        include '../config/connection.php';
+        $dirString = getDirectoryString($directoryLevel);
+
+        include $dirString . 'config/connection.php';
 
         $query =    "   SELECT type
                         FROM property 
