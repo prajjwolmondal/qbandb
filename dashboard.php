@@ -44,10 +44,10 @@
   <div class="container">
   <div class="divider"></div>
   <div class="section">
- 
-  <h3><?php echo $firstname; echo"     "; echo $lastname;?></h3>
-  <a class="waves-effect waves-light btn" href='user/profile.php?id={$currentMemID}'><i class="material-icons right">account_circle</i>View Profile</a>
-    
+ <?php
+  echo "<h3>".$firstname."     ".$lastname."</h3>";
+  echo "<a class=\"waves-effect waves-light btn\" href='user/profile.php?id={$currentMemID}'><i class=\"material-icons right\">account_circle</i>View Profile</a>";
+    ?>
 
   </div>
   <div class="divider"></div>
