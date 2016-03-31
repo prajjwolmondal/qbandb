@@ -15,20 +15,20 @@
             <script>  
                 $(document).ready(function() {
                     $('select').material_select();
-                $('#comments').val('New Text');
-                $('#comments').trigger('autoresize');
+                    $('#comments').val('New Text');
+                    $('#comments').trigger('autoresize');
+                    $('.datepicker').pickadate({
+                        selectMonths: true, // Creates a dropdown to control month
+                        selectYears: 15 // Creates a dropdown of 15 years to control year
+                    });
                 }); 
-            </script>
-            <script>
-                $('.datepicker').pickadate({
-                    selectMonths: true, // Creates a dropdown to control month
-                    selectYears: 15 // Creates a dropdown of 15 years to control year
-                });
+
             </script>
             <script src="property.js"></script>
 
         </head>
     <body>
+
 
         <!-- PHP code for inserting new comment -->
         <?php
@@ -60,6 +60,7 @@
 EOT;
             }
 
+            echo "<div class=\"container\">";
 
             include_once 'config/connection.php';
 
@@ -134,7 +135,7 @@ EOT;
 
             $query = 
             "SELECT  mem_id, street_num, street_name, postal_code, type, num_rooms, beds_avail, overall_rating, price, dist_name, full_kitchen, laundry, shared_room, private_room, pool, close_to_transit, gym, first_name, last_name, overall_rating, about_prop
-            FROM property natural join district natural join member
+            FROM (property natural join district) natural join member
             WHERE prop_id = $propID";
             $property_owner_id = 0;
 
@@ -148,7 +149,6 @@ EOT;
 
                 /* resultset */
                 $result = $stmt->fetchAll();
-                echo "<table border='1'>";
 
                 // no results from query: property does not exist
                 if (empty($result)) {
@@ -159,7 +159,9 @@ EOT;
                 }
 
                 $done = true;
-                foreach ($result as $tuple){
+                $tuple = $result[0];
+
+                foreach ($result as $tuple) {
 
                     $property_owner_id = $tuple['mem_id'];
 
@@ -184,45 +186,103 @@ EOT;
                         }
                     }
 
-                    echo "Property owner: {$tuple['first_name']} {$tuple['last_name']} ({$tuple['mem_id']})";
+                    echo <<<EOT
+        <div class="row">
+            <ul class="collection">
+                <div class="row collection-item">
+                    <div class="col 4 offset-s1 ">
+                        <h3> {$tuple['street_num']} {$tuple['street_name']} </h3>
+                        <h4> {$tuple['postal_code']} </h4>
+                        
+                    </div>
+                    <div class="col 2 offset-s1">
+                        <br/>
+                        District: {$tuple['dist_name']} 
+                        <br/>
+                        Type: {$tuple['type']}
+                        <br/>
+                        Price: {$tuple['price']}
+                    </div>
+                    <div class="col 2 offset-s1">
+                        <br/>
+                        Beds Available: {$tuple['beds_avail']}
+                        <br/>
+                        Rooms: {$tuple['num_rooms']} 
+                    </div>
+                    <div class="col 1 offset-s1">
+                        <br/>
+                        <a href="#strangerRating" style="color: #26A69A;"><i class="material-icons">grade</i>{$tuple['overall_rating']}</a>
+                    </div>
 
-                    echo "<tr><td> Address: ".$tuple['street_num']." ".$tuple['street_name']."</td>";
-                    echo "<td> Postal Code: ".$tuple['postal_code']."</td>";
-                    echo "<td> District: ".$tuple['dist_name']."</td>";
-                    echo "</tr><tr>";
-                    echo "<td> Total number of rooms: ".$tuple['num_rooms']."</td>";
-                    echo "<td> Price: ".$tuple['price']."</td>";
-                    echo "<td> Overall Rating: ".$tuple['overall_rating']."</td>";    
-                    echo "<td> Property Type: ".$tuple['type']."</td>";
-                    echo "<td> Beds Available: ".$tuple['beds_avail']."</td></tr>";
-                    echo "<tr> ";
-                    echo "<td> About Property: </td>";
-                    echo "<td>".$tuple['about_prop']."</td>";
-                    echo "</tr>";
-                    echo "<tr> <td>Ammenities: </td></tr>";
-                    echo "<tr><td>";
 
-                    if($tuple['full_kitchen']=1){
-                        echo "<br> Full Kitchen</br>";
-                    }
-                    if($tuple['laundry']=1){
-                        echo "<br> Laundry</br>";
-                    }
-                    if($tuple['shared_room']=1){
-                        echo "<br> Shared Room</br>";
-                    }
-                    if($tuple['private_room']=1){
-                        echo "<br> Private Room</br>";
-                    }
-                    if($tuple['pool']=1){
-                        echo "<br> Pool</br>";
-                    }
-                    if($tuple['close_to_transit']=1){
-                        echo "<br> Close to transit</br>";
-                    }
-                    if($tuple['gym']=1){
-                        echo "<br> Gym</br>";
-                    }
+
+                </div>
+                <div class="row collection-item">
+                    <div class="col 4 collection-item avatar offset-s1">
+                        <a href="user/profile.php?id={$tuple['mem_id']}">
+                            <br/>
+                            <img src="img/user/{$tuple['mem_id']}" class="circle">
+                            <h5> {$tuple['first_name']} {$tuple['last_name']} </h5>
+                        </a>
+                    </div>
+                    <div class="col s3 offset-s1">
+EOT;
+                        if ($tuple['full_kitchen'] == 1){
+                            echo "<span>&bull; Full Kitchen</span><br>";
+                        }
+                        else echo "<span class=\"greyedOut\">&bull; Full Kitchen</span><br/>";
+                        if ($tuple['laundry'] == 1){
+                            echo "<span>&bull; Laundry</span><br/>";
+                        }
+                        else echo "<span class=\"greyedOut\">&bull; Laundry</span><br/>";
+                        if ($tuple['shared_room'] == 1){
+                            echo "<span>&bull; Shared Room</span><br/>";
+                        }
+                        else echo "<span class=\"greyedOut\">&bull; Shared Room</span><br/>";
+                        if ($tuple['private_room'] == 1){
+                            echo "<span>&bull; Private Room</span><br/>";
+
+                    echo "</div>";
+                    echo "<div class=\"col s3\"> <br/>";
+                        }
+                        else echo "<span class=\"greyedOut\">&bull; Private Room</span><br/>";
+                        if ($tuple['pool'] == 1){
+                            echo "<span>&bull; Pool</span><br/>";
+                        }
+                        else echo "<span class=\"greyedOut\">&bull; Pool</span><br/>";
+                        if ($tuple['close_to_transit'] == 1){
+                            echo "<span>&bull; Close to Transit</span><br/>";
+                        }
+                        else echo "<span class=\"greyedOut\">&bull; Close to Transit</span><br/>";
+                        if ($tuple['gym'] == 1){
+                            echo "<span>&bull; Gym</span><br/>";
+                        }
+                        else echo "<span class=\"greyedOut\">&bull; Gym</span><br/>";
+                    echo <<<EOT
+                    </div>
+                </div>
+                <div class="row " >
+                    <div class="col 12" style="width: 100%;" >
+                        <h4 style="text-align: center;">"{$tuple['about_prop']}"</h4>
+                    </div>
+                </div>
+                <div class="row collection-item">
+                    <!-- Booking Form -->
+                      <div class="row">
+                        <form class="col s12 offset-s3" action="<?php echo "property.php?id=".$currentPropID;?>" method="post">
+                          <!-- Rating -->
+                          <div class="input-field col s4">
+                            <input type="date" name="datePicked" class="datepicker" id="datePicker" />
+                            <label class="active" for="datePicker">Book a date... </label>
+                          </div>
+                            <button class="btn waves-effect waves-light" type="submit" id="strangerCommentBtn" name="strangerComment">Book
+                            <i class="material-icons right">av_timer</i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+EOT;
+
                 }
             } catch (Exception $e) {
                 die(var_dump($e));
@@ -239,9 +299,13 @@ EOT;
                 /* resultset */
                 $result = $stmt->fetchAll();
 
-                echo "<table border=1>";
-                echo "<tr><th>Reviews</th></tr>";
-
+                echo <<<EOT
+                <div class='row'>
+                    <div class='col 11 offset-s1'>
+                        <h4>Reviews</h4>
+                    </div>
+                </div>
+EOT;
                 foreach ($result as $tuple){
 
                     $commenter_id = $tuple['mem_id'];
@@ -251,13 +315,13 @@ EOT;
                     // disable the rating/commenting
                     if ($currentMemID == $commenter_id || $currentMemID == $property_owner_id) {
                         echo <<<EOT
-                        <script>
-                            $(document).ready(function() {
-                                document.getElementById('strangerRating').disabled = true;
-                                $('#strangerRating').material_select();
+                <script>
+                    $(document).ready(function() {
+                        document.getElementById('strangerRating').disabled = true;
+                        $('#strangerRating').material_select();
 
-                                document.getElementById('strangerCommentBtn').disabled = true;
-                                document.getElementById('strangerCommentBox').setAttribute("disabled", "true");
+                        document.getElementById('strangerCommentBtn').disabled = true;
+                        document.getElementById('strangerCommentBox').setAttribute("disabled", "true");
                             
 EOT;
                         $commentBoxValue = "";
@@ -270,9 +334,9 @@ EOT;
                         }
 
                         echo <<<EOT
-                                {$commentBoxValue}
-                            });
-                        </script>
+                        {$commentBoxValue}
+                    });
+                </script>
 EOT;
 
 
@@ -280,78 +344,107 @@ EOT;
                     }
 
                     echo <<<EOT
-                        <tr>
-                            <td>
-                            Rating: {$tuple['rating']}<br>
-                            Comment: {$tuple['comment']}<br>
-                            Comment added by: <a href='user/profile.php?id={$tuple['mem_id']}'> {$tuple['first_name']} {$tuple['last_name']} </a> on: {$tuple['date_added']}<br>
+                
+                <div class="row">
+                    <div class="col s12 m8 offset-m2">
+                        <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                                <span class="card-title">
+                                    From <a href='user/profile.php?id={$tuple['mem_id']}'> {$tuple['first_name']} {$tuple['last_name']} </a>
+                                </span>
+                                 on {$tuple['date_added']}
+                                <p>{$tuple['comment']}</p>
+                                <br/>
+                                <strong>Rating: </strong>{$tuple['rating']}
+                            </div>
 EOT;
-                    if ($tuple['reply'] != NULL){
-                        echo "Owner Reply: " . $tuple['reply'];
-                        echo "</td></tr>";
-                    }
-
                     // enable ability to add reply if a reply does not already exist
-                    else{
-
+                    if ($tuple['reply'] == NULL) {
                         // if the ID if the currently logged in user matches the ID this property's owner
                         if ($property_owner_id == $currentMemID){
 
                             $currentPage = htmlspecialchars($_SERVER['REQUEST_URI']);
 
                             echo <<<EOT
-                            <div class="owner_reply">
-                                <button class='btn waves-effect waves-light' type='submit' id='btn'>Reply?
-                                    <i class="material-icons right">trending_flat</i>
-                                </button>
-                            </div>
+                            <div class="card-action">
+                                <div class="owner_reply">
+                                    <button class='btn waves-effect waves-light' type='submit' id='btn'>Reply?
+                                        <i class="material-icons right">trending_flat</i>
+                                    </button>
+                                </div>
 
-                            <tr id="ownerReplyTextArea" style="display: none">
-                                <td>
-                                    <div class='row'>
-                                        <form class='col s12' action='{$currentPage}' method='post'>
-                                            <div class='row'>
-                                                <div class='input-field col s12'>
+                                <div id="ownerReplyTextArea" style="display: none">
+                                    <div>
+                                        <div class='row'>
+                                            <form class='col s12' action='{$currentPage}' method='post'>
+                                                <div class='row'>
+                                                    <div class='input-field col s12'>
                                                     <textarea id='ownerCommentBox' length='500' class='materialize-textarea' name='user_comment'></textarea>
                                                     <label for='comments'>Your Comment (Optional)</label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <button class='btn waves-effect waves-light' type='submit' name='ownerReply' value='$commenter_id'>Reply
-                                                <i class='material-icons right'>trending_flat</i>
-                                            </button>
-                                        </form>
+                                                <button class='btn waves-effect waves-light' type='submit' name='ownerReply' value='$commenter_id'>Submit 
+                                                    <i class='material-icons right'>trending_flat</i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
-                                </td>
-                            </tr>
+                                </div>
 EOT;
 
                         }
                     }
+                    echo <<<EOT
+                            </div>
+                        </div>
+                    </div>
+                </div>
+EOT;
+
+                    if ($tuple['reply'] != NULL) {
+                        echo <<<EOT
+                    <div class="row">
+                        <div class="col s12 m7 offset-m3">
+                            <div class="card blue-grey darken-1">
+                                <div class="card-content white-text">
+                                    <span class="card-title">
+                                        From the owner:
+                                    </span>
+                                    <p>{$tuple['reply']}</p>
+                                    <br/>
+                                    <strong>Rating: </strong>{$tuple['rating']}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+EOT;
+                    }
                 }
-                echo "</table>";
-            } catch (Exception $e){
+            }
+            catch (Exception $e){
                 die(var_dump($e));
             }
+                echo "</ul></div>";
     	?>
 
 <!-- Rating Form -->
   <div class="row">
-    <form class="col s12" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]);?>" method="post">
-      <!-- Rating -->
-      <div class="input-field col s4">
-        <select id="strangerRating" class="validate" name="user_rating" required>
-          <option value="" disabled selected>Select your rating</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
+    <form class="col s6 offset-s3" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]);?>" method="post">
+        <!-- Rating -->
+        <div class="input-field col s4">
+            <select id="strangerRating" class="validate" name="user_rating" required>
+              <option value="" disabled selected>Select your rating</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
         <label for="rating">Rating (Required)</label>
       </div>
         <!-- Comment -->
@@ -366,19 +459,7 @@ EOT;
         </button>
     </form>
   </div>
-  <br><br>
-<!-- Booking Form -->
-  <div class="row">
-    <form class="col s12" action="<?php echo "property.php?id=".$currentPropID;?>" method="post">
-      <!-- Rating -->
-      <div class="input-field col s4">
-        <input type="date" name="datePicked" class="datepicker">
-      </div>
-        <button class="btn waves-effect waves-light" type="submit" id="strangerCommentBtn" name="strangerComment">Book
-        <i class="material-icons right">av_timer</i>
-        </button>
-    </form>
-  </div>
+</div> <!-- end container -->
 
 </body>
 </html>

@@ -198,6 +198,7 @@ function navbar($directoryLevel) {
 
 	$returnString = "";
 	$returnString .= <<<EOT
+    <div class="navbar-fixed">
 	<nav>
 	  <div class="nav-wrapper teal lighten-2">
 	    <a href="{$directoryString}" class="brand-logo">Queen's BnB</a>
@@ -257,6 +258,7 @@ EOT;
 		    </ul>        
 		</div>
 	</nav>
+    </div>
 EOT;
 	return $returnString;
 }

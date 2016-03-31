@@ -24,15 +24,15 @@
 
     </head>
 <body>
-        <div class = "parallax-container">
-            <div class="parallax"><img id="image" src="images/homepage1.jpg"></div>
-        </div>
 
     <?php
         include_once 'navbar.php';
         echo navbar(0);
     ?>
-    <div class="container">
+        <div class = "parallax-container">
+            <div class="parallax"><img id="image" src="images/homepage1.jpg"></div>
+        </div>
+    <div class="container" style="margin: 20px auto 20px auto;">
 
     <h3>Top properties</h3>
 
@@ -156,23 +156,23 @@ EOT;
         <div class="parallax"><img id="image" src="images/homepage2.jpg"></div>
     </div>
 
-<footer class="page-footer">
-        <div class="nav-wrapper teal lighten-2">
-          <div class="container">
-            <div class="row">
-              <div class="col l s20">
-                <h5 class="white-text">About Us</h5>
-                <p class="grey-text text-lighten-4">Founded in March of 2016 and based in Kingston, Ontario. QBandB is a not-so-trusted community marketplace for people to list, discover, and book unique accommodations. With a nonexistent customer service and a rapidly declining community of users, QBandB is the easiest way for people to monetize their extra space and showcase it to an audience of at least 3.</p>
-                <p class="grey-text text-lighten-4">This website was created by Simon Zhang, Jay Zhao, and Prajjwol Mondal.</p>
-              </div>
-            </div>
-          </div>
-          <div class="footer-copyright">
-            <div class="container">
-            © 2016 QBandB
-            </div>
+<footer class="page-footer teal lighten-2" style="margin-top: 0;">
+    <div class="nav-wrapper teal lighten-2">
+      <div class="container">
+        <div class="row">
+          <div class="col l s20">
+            <h5 class="white-text">About Us</h5>
+            <p class="grey-text text-lighten-4">Founded in March of 2016 and based in Kingston, Ontario. QBandB is a not-so-trusted community marketplace for people to list, discover, and book unique accommodations. With a nonexistent customer service and a rapidly declining community of users, QBandB is the easiest way for people to monetize their extra space and showcase it to an audience of at least 3.</p>
+            <p class="grey-text text-lighten-4">This website was created by Simon Zhang, Jay Zhao, and Prajjwol Mondal.</p>
           </div>
         </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+        © 2016 QBandB
+        </div>
+      </div>
+    </div>
 </footer>
 </body>
 </html>
