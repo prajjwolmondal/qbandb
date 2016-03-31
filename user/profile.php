@@ -24,9 +24,15 @@
         <script src="property.js"></script>
         </head>
     <body>
+
     	<?php
     	    include_once '../navbar.php';
+            echo navbar(0);
     	    include_once '../config/connection.php';
+
+            $firstname = $_SESSION['first_name'];
+            $currentMemID = $_SESSION['mem_id'];
+            $lastname = $_SESSION['last_name'];
     /*
             
             if (mysqli_connect_errno())
@@ -34,9 +40,19 @@
               echo "Failed to connect to MySQL: " . mysqli_connect_error();
               die();
             }
-    */      $currentMemID = 3;
-            $query = 
-            "SELECT first_name, last_name, aboutme, email, degree_name, phone_num, faculty_name FROM  (`member` natural join `degree`) natural join `faculty` WHERE  mem_id = $currentMemID";
+    */                 
+
+      //   <ul class="collection with-header">
+      //   <li class="collection-header"><h4>First Names</h4></li>
+      //   <li class="collection-item">Alvin</li>
+      //   <li class="collection-item">Alvin</li>
+      //   <li class="collection-item">Alvin</li>
+      //   <li class="collection-item">Alvin</li>
+      // </ul>
+
+    $query = "SELECT first_name, last_name, aboutme, email, degree_name, phone_num, faculty_name 
+              FROM  (`member` natural join `degree`) natural join `faculty` 
+              WHERE  mem_id = $currentMemID";
             try {
                 // prepare query for execution
                $stmt = $con->prepare($query);
@@ -44,19 +60,39 @@
                 $stmt->execute();
                 /* resultset */
                 $result = $stmt->fetchAll();
-                echo "<table border='1'>";
+                echo "<div class=\"container\"><ul class=\"collection with-header\">";
+                echo "<li class=\"collection-item avatar\">";
+                echo "<img src=\"../qbandb/user/timmy.jpg\" alt=\"\" class=\"circle\">";
+                echo "<span class=\"title\"><h3>".$firstname." ".$lastname."</h3></span>";
+         
+                echo "<a class=\"waves-effect waves-light btn\" href='user/edit.php'><i class=\"material-icons right\">edit</i>Edit Profile</a></li>";
                 foreach ($result as $tuple){
-                    echo "<tr><td> My name is ".$tuple['first_name']." ".$tuple['last_name']."</td></tr>";
-                    echo "<tr><td> My email is ".$tuple['email']."</td></tr>";
-                    echo "<tr><td> My phone number is ".$tuple['phone_num']."</td></tr>";
-                    echo "<tr><td> I have a degree in <strong>".$tuple['degree_name']."</strong> under the faculty of <strong>".$tuple['faculty_name']."</strong></td></tr>";
-                    echo "<tr><td> About me: ".$tuple['aboutme']."</td></tr>";
+                    echo "<br>";
+                    echo "<div class=\"row\">";
+                        echo "<div class=\"col s4 offset-s1\">";
+                        echo "<i class=\"material-icons\">email</i>&nbsp&nbsp".$tuple['email']."</div>";
+                        echo "<div class=\"col s4 offset-s1\">";
+                        echo "<i class=\"material-icons\">call</i>&nbsp&nbsp".$tuple['phone_num']."</div>";
+                    echo "</div>";
+                    echo "<div class=\"row\">";
+                        echo "<div class=\"col s4 offset-s1\">";
+                        echo "<i class=\"material-icons\">import_contacts</i>&nbsp&nbsp".$tuple['degree_name']."</div>";
+                        echo "<div class=\"col s4 offset-s1\">";
+                        echo "<i class=\"material-icons\">account_balance</i>&nbsp&nbsp".$tuple['faculty_name']."</div>";
+                    echo "</div>";
+                    echo "<div class=\"row\">";
+                        echo "<div class=\"col s4 offset-s1\">";
+                        echo "<h5>About me:</h5>".$tuple['aboutme']."</div>";
+                    echo "</div>";
+                echo "</div>";
+
+       
                 }
             } catch (Exception $e) {
                 die(var_dump($e));
             }   // End of try/catch
 
-            $query = "SELECT  prop_id, street_num, street_name, apt_num, overall_rating FROM `property` natural join `member` WHERE mem_id = $currentMemID";
+            $query = "SELECT  prop_id, street_num, street_name, apt_num, postal_code, overall_rating FROM `property` natural join `member` WHERE mem_id = $currentMemID";
             try{
                 // prepare query for execution
                 $stmt = $con->prepare($query);
@@ -64,28 +100,37 @@
                 $stmt->execute();
                 /* resultset */
                 $result = $stmt->fetchAll();
-                echo "<table border=1><caption>Properties that I own</caption>";
+
+
+            
                 foreach ($result as $tuple){
-                    echo "<tr><td>";
-                    if ($tuple['apt_num']!=Null){
-                        echo "Address: Apt. Number: ".$tuple['apt_num'].", ".$tuple['street_num']." ".$tuple['street_name']."<br>";
-                    }
-                    else{
-                        echo "Address: ".$tuple['street_num']." ".$tuple['street_name']."<br>";
-                    }
-                    echo "</td></tr>";
-                    echo "<tr><td>";
-                    echo "Rating: ";
-                    echo "<i class='material-icons'>grade</i>".$tuple['overall_rating'];
-                    // echo "<i class='tiny material-icons'>star_rate</i>".$tuple['overall_rating'];
-                    echo "</td></tr>";
-                    echo "<tr><td>";
-                    echo "<a href='../property.php?id={$tuple['prop_id']}'>";
-                    echo "Go to property"."</a>";
-                    echo "</td></tr>";
-                    echo "<br>";
+                echo "<div class=\"container\">";
+                echo "<ul class=\"collection with-header\">";
+                if ($tuple['apt_num']!=Null){
+                echo "<li class=\"collection-item avatar\">";
+                echo "<img src=\"../img/property/{$tuple['prop_id']}.png\" alt=\"\" class=\"circle\">";
+            
+                echo "<span class=\"title\"><a href='../property.php?id={$tuple['prop_id']}'>"
+                     .$tuple['street_num']." ".$tuple['street_name'].
+                     "  Apt No  ".$tuple['apt_num']."</span>";
+                 } else{
+                echo "<li class=\"collection-item avatar\">";
+                echo "<img src=\"../img/property/{$tuple['prop_id']}.png\" alt=\"\" class=\"circle\">";
+                echo "<span class=\"title\"><a href='../property.php?id={$tuple['prop_id']}'>"
+                     .$tuple['street_num']." ".$tuple['street_name']."</span>";
+                 
+                 }
+                echo "<p>".$tuple['postal_code']." <br>";
+                echo "</p>";
+                echo "<i class=\"material-icons\">grade</i></a>".$tuple['overall_rating'];
+                echo "</li>";
+
+                echo "</div>";
+
+                   
+                   
                 }
-                echo "</table>";
+                echo "</div>";
             } catch (Exception $e){
                 die(var_dump($e));
             }

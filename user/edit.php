@@ -79,7 +79,7 @@
   <div class="row">
     <form class="col s8 offset-s2" action="./edit.php" method="post">
       <!-- Name -->
-<!--       <div class="row">
+      <div class="row">
         <div class="input-field col s6">
           <input id="firstname" type="text" length="40" name="fname" value="<?php echo $tuple['first_name'];?>"required>
           <label class="active"  for="firstname">first name</label>
@@ -88,9 +88,9 @@
           <input id="lastname" type="text" length="40" name="lname" value="<?php echo $tuple['last_name'];?>"required>
           <label class="active"  for="lastname">last name</label>
         </div>
-      </div> -->
+      </div>
       <!-- Email and Phone -->
-<!--       <div class="row">
+      <div class="row">
         <div class="input-field col s6">
           <input id="email" type="email" class="validate" name="email" value="<?php echo $tuple['email'];?>"required>
           <label class="active" data-error="invalid email" for="email">email</label>
@@ -99,7 +99,7 @@
           <input id="phonenum" type="tel" name="phone" value="<?php echo $tuple['phone_num'];?>">
           <label class="active" for="phonenum">phone number</label>
         </div>
-      </div> -->
+      </div>
       <!-- Faculty -->
       <div class="input-field col s4">
         <select name="faculty" id="faculty" required>
@@ -125,17 +125,17 @@
         <label>degree</label>
       </div>
         <!-- Year -->
-        <!-- <div class="input-field col s1">
+        <div class="input-field col s1">
           <input id="year" type="number" name="year" value="<?php echo $tuple['year'];?>">
           <label class="active" for="year">year</label>
-         </div>-->
+        </div>
         <!-- About me -->
-      <!-- <div class="row">
+      <div class="row">
         <div class="input-field col s8" >
           <textarea id="aboutme" length="500" name="about" class="materialize-textarea" value="<?php echo $tuple['aboutme'];?>"required></textarea>
           <label for="aboutme">about me</label>
         </div>
-      </div> -->
+      </div>
       <button class="btn waves-effect waves-light" type="submit" value="submit" name="action">Update Info
       <i class="material-icons right">replay</i>
       </button>

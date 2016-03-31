@@ -23,16 +23,14 @@
     });
   });
 
-   $('#cancelBtn').click(function(){ 
-        $('#hiddenCancel').click();
-        var val = $('#hiddenCancel').attr('name');
-        });
+       
     </script>
 
   
   </head>
 
   <body>
+
   <?php
     include_once 'navbar.php';
     echo navbar(0);
@@ -47,6 +45,7 @@
   <div class="section">
  
   <h3><?php echo $firstname; echo"     "; echo $lastname;?></h3>
+  <a class="waves-effect waves-light btn" href='user/profile.php'><i class="material-icons right">account_circle</i>View Profile</a>
     
 
   </div>
@@ -201,7 +200,7 @@ EOT;
   </div>
   <div class="divider"></div>
   <div class="section">
-
+  <script src="cancelBooking.js"></script>
 
 
   <h4>Bookings</h4>
@@ -216,30 +215,43 @@ EOT;
             // Execute the query
             $stmtbook->execute();
             $resultbook = $stmtbook->fetchAll();
-            echo "<table border=1>";
-            echo "<tr><th>Date Booked</th><th>Period</th><th>Status</th><th>Address </th> <th> Cancel</th></tr>";
-            foreach ($resultbook as $tuplebook){
-              $count2++;
-                echo "<tr><td>".$tuplebook['date_booked']."</td>";
-                echo "<td>".$tuplebook['period']."</td>";
-                echo "<td>".$tuplebook['status']."</td>";
-                echo "<td><a href='property.php?id={$tuplebook['prop_id']}'>".$tuplebook['street_num']." ".$tuplebook['street_name']."</td>";
 
-                echo "<td><form class=\"col s2\" action=\"dashboard.php\" method=\"post\">
-                        <input id=\"hiddenCancel\" type=\"submit\" name=\"cancelBtn\" style=\"display: none;\"/>
-                        <button id=\"cancelBtn\" type=\"submit\" class=\"waves-effect waves-light\">Cancel </button>
+            $bookingResult = "";
+            $bookingResult.= <<<EOT
+
+            <table border=1>
+            <tr><th>Date Booked</th><th>Period</th><th>Status</th><th>Address </th> <th> Cancel</th></tr>
+
+EOT;
+            foreach ($resultbook as $tuplebook){
+              echo $count2;
+             
+                $bookingResult.="<tr><td>".$tuplebook['date_booked']."</td>";
+                $bookingResult.= "<td>".$tuplebook['period']."</td>";
+                $bookingResult.= "<td>".$tuplebook['status']."</td>";
+                $bookingResult.= "<td><a href='property.php?id={$tuplebook['prop_id']}'>".$tuplebook['street_num']." ".$tuplebook['street_name']."</td>";
+
+                $bookingResult.= "<td><form class=\"col s12\" action=\"dashboard.php\" method=\"post\">
+                      <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action".$count2."\">Cancel
+                      <i class=\"material-icons right\">block</i>
+                      </button>
                       </form></td>";
                
-                echo "</tr>";
+                $bookingResult.= "</tr>";
 
-
-                if (isset($_POST['cancelBtn'.$count2])){
+                $bookingResult.= "<script> ";
+                $bookingResult.= "$('#action'".$count2.").click(function(){ ";
+                $bookingResult.= "$('#hiddenLogout').click();";
+                $bookingResult.= "var val = $('#hiddenLogout').attr('name');";
+                $bookingResult.= "});";
+                $bookingResult.= "</script>";
+          
+                 $count2++;
+                if (isset($_POST['action'.$count2])){
                     // echo "<h1> WOO! </h1>";
                   $cancelbook = "UPDATE qbandb.booking 
                                    SET status= \"Cancelled\" 
                                    WHERE  mem_id = {$currentMemID} and prop_id = {$tuplebook['prop_id']};";
-
-                  
                   try {
                         // prepare query for execution
                        $stmt = $con->prepare($cancelbook);
@@ -249,12 +261,13 @@ EOT;
                         die(var_dump($e));
                     }
                   }
+               
             }
-            echo "</table>";
+            $bookingResult.= "</table>";
         }catch (Exception $e){
             die(var_dump($e));
         }
-
+        echo $bookingResult;
     $resultString = "";
 
    ?>
