@@ -39,6 +39,12 @@
 
 </script>
 
+<style type="text/css">
+a.brand-logo{
+    padding-left: 20px;
+}    
+</style>
+
 <!-- Login Modal -->
 <div id="modal1" class="modal">
     <div class="row">
