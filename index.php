@@ -15,8 +15,20 @@
         <!-- Material icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+        <!-- Script for intializing parallax effect -->
+        <script>
+        $(document).ready(function(){
+            $('.parallax').parallax();
+        });
+        </script>
+
+        <link rel="stylesheet" type="text/css" href="index.css">
+
     </head>
 <body>
+        <div class = "parallax-container">
+            <div class="parallax"><img id="image" src="images/homepage1.jpg"></div>
+        </div>
 
     <?php
         include_once 'navbar.php';
@@ -50,6 +62,7 @@
               <th data-field="type">Type</th>
               <th data-field="available">Available</th>
               <th data-field="rating">Rating</th>
+              <th>Link</th>
           </tr>
         </thead>
         <tbody>
@@ -61,6 +74,70 @@ EOT;
                 $resultString .= "<td>" . $tuple['type'] . "</td>"; // type
                 $resultString .= "<td>" . $tuple['beds_avail'] . " beds </td>"; // beds available
                 $resultString .= "<td>" . $tuple['overall_rating'] . "</td>"; // rating
+
+                $resultString .= "<td> <a href='property.php?id={$tuple['prop_id']}' class='btn waves-effect waves-orange  '>Let's Go</a></td>";
+                $resultString .= "</tr>";
+            }
+            
+            $resultString .= <<<EOT
+        </tbody>
+    </table>
+EOT;
+            echo $resultString;
+        }
+        catch (Exception $e) {
+            die(var_dump($e));
+        }
+
+        echo "<h3> Top Point of Interests </h3>";
+        $query = "SELECT  point_of_interest
+                  FROM  poi";
+        try {
+            $stmt = $con->prepare($query); // prepare query for execution
+            
+            $stmt->execute(); // execute the query
+     
+            /* resultset */
+            $result = $stmt->fetchAll();
+            $resultString = "";
+            $resultString .= <<<EOT
+    <table class="responsive-table striped">
+        <tbody>
+EOT;
+            foreach ($result as $tuple) {
+                $resultString .= "<tr>";
+                $resultString .= "<td>" . $tuple['point_of_interest'] . "</td>";
+                $resultString .= "</tr>";
+            }
+            
+            $resultString .= <<<EOT
+        </tbody>
+    </table>
+EOT;
+            echo $resultString;
+        }
+        catch (Exception $e) {
+            die(var_dump($e));
+        }
+
+        echo "<h3> Top Districts </h3>";
+        $query = "SELECT  dist_name
+                  FROM  district";
+        try {
+            $stmt = $con->prepare($query); // prepare query for execution
+            
+            $stmt->execute(); // execute the query
+     
+            /* resultset */
+            $result = $stmt->fetchAll();
+            $resultString = "";
+            $resultString .= <<<EOT
+    <table class="responsive-table striped">
+        <tbody>
+EOT;
+            foreach ($result as $tuple) {
+                $resultString .= "<tr>";
+                $resultString .= "<td>" . $tuple['dist_name'] . "</td>";
                 $resultString .= "</tr>";
             }
             
@@ -77,6 +154,24 @@ EOT;
 
 
     </div>
-
+    <div class = "parallax-container">
+        <div class="parallax"><img id="image" src="images/homepage2.jpg"></div>
+    </div>
+<footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l s20">
+                <h5 class="white-text">About Us</h5>
+                <p class="grey-text text-lighten-4">Founded in March of 2016 and based in Kingston, Ontario. QBandB is a not-so-trusted community marketplace for people to list, discover, and book unique accommodations. With nonexistent customer service and a rapidly declining community of users, QBandB is the easiest way for people to monetize their extra space and showcase it to an audience of at least 3.</p>
+                <p class="grey-text text-lighten-4">This website was created by Simon Zhang, Jay Zhao, and Prajjwol Mondal.</p>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2016 QBandB
+            </div>
+          </div>
+        </footer>
 </body>
 </html>
