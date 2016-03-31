@@ -112,14 +112,14 @@ EOT;
             }
             // add owner's reply
             else if (isset($_POST['ownerReply'])) {
-                echo "Owner's reply: " . $_POST['ownerReply'];
+                //echo "Owner's reply: " . $_POST['ownerReply'];
 
                 $commenter_id = $_POST['ownerReply']; // commenter's id was passed through here
 
-                echo "reply = {$_POST['user_comment']}
+                /*echo "reply = {$_POST['user_comment']}
                                 WHERE   prop_id = {$currentPropID}
                                 and     mem_id = {$commenter_id}";
-
+*/
                 $query =    "   UPDATE  qbandb.comments
                                 SET     reply = \"{$_POST['user_comment']}\"
                                 WHERE   prop_id = {$currentPropID}
