@@ -24,6 +24,15 @@
 <body>
 
 	<?php
+
+      // Create a user session or resume an existing one
+      session_start ();
+
+      // should not be able to register if logged in
+      if (isset($_SESSION['mem_id'])) {
+        header("Location: /qbandb/index.php"); // you're not supposed to be here
+      }
+
 	    include_once 'registernav.php';
 	    include_once 'config/connection.php';
 	?>

@@ -21,13 +21,18 @@
 	$expiry = $_POST['expiry'];
 	$cvv = $_POST['cvv'];
 
-	$query="SELECT count(mem_id) from qbandb.member;";
+	$query="SELECT max(mem_id) from qbandb.member;";
 	$stmt1 = $con->prepare($query);
     $stmt1->execute();
     $result=$stmt1->fetchAll();
     foreach ($result as $tuple){
     	$memid=$tuple['max(mem_id)'];
 	}
+
+	// Create a user session or resume an existing one
+	session_start ();
+
+	$_SESSION['mem_id'] = $memid;
 
 
    $query2= "INSERT INTO qbandb.member values ($memid+1, 0, '$fname', '$lname', $degree, $faculty, '$phone', $year, '$about', '$email', '$pass', '$credit', $expiry, $cvv);";
