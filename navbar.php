@@ -115,7 +115,7 @@ function submitLoginLogout () {
 
         include 'config/connection.php';
 
-        $query = "  SELECT  first_name, mem_id, email, password
+        $query = "  SELECT  first_name, mem_id, email, password, last_name
                     FROM    member 
                     WHERE   email=:email AND password=:password";
 
@@ -145,6 +145,8 @@ function submitLoginLogout () {
 
                 // set session variables
                 $_SESSION['mem_id'] = $myrow['mem_id'];
+                $_SESSION['first_name'] =$myrow['first_name'];
+                $_SESSION['last_name'] =$myrow['last_name'];
 
                 // display message
                 $resultString .= "<script>Materialize.toast(\"Welcome back {$myrow['first_name']}!\", 1500)</script>";
@@ -163,6 +165,8 @@ function submitLoginLogout () {
 
 		// end session
 		unset($_SESSION['mem_id']);
+        unset($_SESSION['first_name']);
+        unset($_SESSION['last_name']);
 		session_destroy();
 
 		// send to index.php if current page is dashboard or admin
