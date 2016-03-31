@@ -54,7 +54,7 @@
             </div>
 
     		<!-- Login form -->
-            <form class="col s12" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+            <form class="col s12" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]);?>" method="post">
               <div class="row">
                 <div class="input-field col s1">
                     <i class="material-icons">account_circle</i>
@@ -194,9 +194,12 @@ EOT;
 
 
 	$navbarLinks = 	[
-						"search/index.php" => "Search Listings",
-						"dashboard.php" => "Dashboard",
+						"search/index.php" => "Search Listings"
 					];
+
+    if (isset($_SESSION['mem_id'])) {
+        $navbarLinks["dashboard.php"] = "Dashboard";
+    }
 
 	foreach ($navbarLinks as $page => $pageName) {
 		$currentPage = htmlspecialchars($_SERVER['PHP_SELF']);
@@ -218,7 +221,7 @@ EOT;
     // if logged in, show log out button
     if (isset($_SESSION['mem_id'])) {
 	
-    	$currentPage = htmlspecialchars($_SERVER['PHP_SELF']);
+    	$currentPage = htmlspecialchars($_SERVER['REQUEST_URI']);
 
 		$returnString .= <<<EOT
 		    	<li>
