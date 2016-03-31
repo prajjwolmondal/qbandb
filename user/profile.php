@@ -27,6 +27,7 @@
 
     	<?php
     	    include_once '../navbar.php';
+<<<<<<< HEAD
             echo navbar(0);
     	    include_once '../config/connection.php';
 
@@ -34,12 +35,34 @@
             $currentMemID = $_SESSION['mem_id'];
             $lastname = $_SESSION['last_name'];
     /*
-            
-            if (mysqli_connect_errno())
-            {
-              echo "Failed to connect to MySQL: " . mysqli_connect_error();
-              die();
+=======
+            echo navbar(1);
+    	    include_once '../config/connection.php';
+
+            // no property specified
+            if (!isset($_GET['id']) || $_GET['id'] == '') {
+                header ("Location: ../qbandb/index.php");
             }
+
+            // not logged in
+            if (!isset($_SESSION['mem_id'])) {
+                echo "<script>Materialize.toast(\"You're not logged in! You will not be able to rate/comment on properties!\", 5000)</script>"; // display message
+>>>>>>> 673c41879a5ece6c8a880e493807422c7c3f95a8
+            
+                echo <<<EOT
+                        <script>
+                            $(document).ready(function() {
+                                document.getElementById('strangerRating').disabled = true;
+                                $('#strangerRating').material_select();
+
+                                document.getElementById('strangerCommentBtn').disabled = true;
+                                document.getElementById('strangerCommentBox').setAttribute("disabled", "true");
+                                document.getElementById('strangerCommentBox').value = "You must be logged in to comment!";
+                            });
+                        </script>
+EOT;
+            }
+<<<<<<< HEAD
     */                 
 
       //   <ul class="collection with-header">
@@ -53,6 +76,13 @@
     $query = "SELECT first_name, last_name, aboutme, email, degree_name, phone_num, faculty_name 
               FROM  (`member` natural join `degree`) natural join `faculty` 
               WHERE  mem_id = $currentMemID";
+=======
+
+            $currentMemID = $_GET['id']; // ID of property currently viewing
+
+            $query = 
+            "SELECT first_name, last_name, aboutme, email, degree_name, phone_num, faculty_name FROM  (`member` natural join `degree`) natural join `faculty` WHERE  mem_id = $currentMemID";
+>>>>>>> 673c41879a5ece6c8a880e493807422c7c3f95a8
             try {
                 // prepare query for execution
                $stmt = $con->prepare($query);

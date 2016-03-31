@@ -20,6 +20,10 @@
                 }); 
             </script>
             <script>
+                $('.datepicker').pickadate({
+                    selectMonths: true, // Creates a dropdown to control month
+                    selectYears: 15 // Creates a dropdown of 15 years to control year
+                });
             </script>
             <script src="property.js"></script>
 
@@ -65,6 +69,7 @@ EOT;
             if (isset($_SESSION['mem_id']))
                 $currentMemID = $_SESSION['mem_id']; // ID of user currently logged in
 
+            // echo $currentMemID;
             $currentPropID = $_GET['id']; // ID of property currently viewing
             $date = new DateTime();
             $currentDate = $date->format('Y-m-d');
@@ -153,9 +158,31 @@ EOT;
                     die();
                 }
 
+                $done = true;
                 foreach ($result as $tuple){
 
                     $property_owner_id = $tuple['mem_id'];
+
+                    // Adding booking to database
+                    if (isset($_POST['datePicked'])){
+                        if ($done==true){
+                            $bookingPeriod = $_POST['datePicked'];
+                            // echo "<h1>".$bookingPeriod."</h1>";
+                            $query = 
+                                "INSERT  into qbandb.booking 
+                                 VALUES ($currentMemID, $currentPropID, $property_owner_id, '$bookingPeriod', 'Pending', '$currentDate');";
+                            try {
+                                // prepare query for execution
+                                $stmt = $con->prepare($query);
+                                // Execute the query
+                                $stmt->execute();
+                            }
+                            catch (Exception $e){
+                                die(var_dump($e));
+                            }
+                            $done = false;
+                        }
+                    }
 
                     echo "Property owner: {$tuple['first_name']} {$tuple['last_name']} ({$tuple['mem_id']})";
 
@@ -257,7 +284,7 @@ EOT;
                             <td>
                             Rating: {$tuple['rating']}<br>
                             Comment: {$tuple['comment']}<br>
-                            Comment added by: {$tuple['first_name']} {$tuple['last_name']} ({$tuple['mem_id']}) on: {$tuple['date_added']}<br>
+                            Comment added by: <a href='user/profile.php?id={$tuple['mem_id']}'> {$tuple['first_name']} {$tuple['last_name']} </a> on: {$tuple['date_added']}<br>
 EOT;
                     if ($tuple['reply'] != NULL){
                         echo "Owner Reply: " . $tuple['reply'];
@@ -339,5 +366,19 @@ EOT;
         </button>
     </form>
   </div>
+  <br><br>
+<!-- Booking Form -->
+  <div class="row">
+    <form class="col s12" action="<?php echo "property.php?id=".$currentPropID;?>" method="post">
+      <!-- Rating -->
+      <div class="input-field col s4">
+        <input type="date" name="datePicked" class="datepicker">
+      </div>
+        <button class="btn waves-effect waves-light" type="submit" id="strangerCommentBtn" name="strangerComment">Book
+        <i class="material-icons right">av_timer</i>
+        </button>
+    </form>
+  </div>
+
 </body>
 </html>
