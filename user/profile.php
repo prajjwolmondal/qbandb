@@ -71,7 +71,7 @@ EOT;
                 echo "<img src=\"../img/user/{$currentMemID}.png\" alt=\"\" class=\"circle\" style='margin-top: 20px;'>";
                 echo "<span class=\"title\"><h3>".$firstname." ".$lastname."</h3></span>";
          
-                echo "<a class=\"waves-effect waves-light btn\" href='edit.php' id=\"editProfileBtn\"><i class=\"material-icons right\">edit</i>Edit Profile</a></li>";
+                echo "<a class=\"waves-effect waves-light btn\" href='../edit.php' id=\"editProfileBtn\"><i class=\"material-icons right\">edit</i>Edit Profile</a></li>";
                 foreach ($result as $tuple){
                     echo "<br>";
                     echo "<div class=\"row\">";
