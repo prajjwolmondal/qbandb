@@ -20,6 +20,8 @@
     // if submit button was clicked
     if (isset($_POST['submitBtn'])){
 
+        session_start();
+
         include './config/connection.php';
 
         // count number of properties in property to figure out the prop_id
@@ -33,9 +35,23 @@
         $memID = $_SESSION['mem_id']; // get from user logged in
         $propID;
 
+        foreach ($_POST as $key => $val) {
+            if (gettype($val) == "string")
+                $_POST[$key] = htmlspecialchars($val);
+            echo $key . ": ".$val . "<br/>";
+        }
+
+
         $streetNum = $_POST['addrNum'];
         $streetName = $_POST['addrName'];
-        $aptNum = $_POST['aptNum'];
+        $aptNum;
+        if (!isset($_POST['aptNum'])) {
+            $aptNum = -1;
+            echo "s";
+        }
+        else {
+            $aptNum = $_POST['aptNum'];
+        }
         $postCode = $_POST['postal'];
         $numRooms = $_POST['numRooms'];
         $bedsAvail = $_POST['bedsAvail'];
@@ -56,10 +72,17 @@
         $private           = (isset($_POST['private']) ? 1 : 0);
         $closeToTransit    = (isset($_POST['closeToTransit']) ? 1 : 0);
 
-        $query = "  INSERT into `property`
+        if (!isset($_POST['aptNum']))
+            $query = "  INSERT into `property`
+                    values ($memID, $propID, $streetNum, '$streetName', NULL, '$postCode', $distID, $sumVotes, $numVotes, 
+                            $overallRating, '$type', $numRooms, $bedsAvail, $price, $kitchen, $laundry,
+                            $shared, $private, $pool, $closeToTransit, $gym, '$description');";     
+        else
+            $query = "  INSERT into `property`
                     values ($memID, $propID, $streetNum, '$streetName', $aptNum, '$postCode', $distID, $sumVotes, $numVotes, 
                             $overallRating, '$type', $numRooms, $bedsAvail, $price, $kitchen, $laundry,
-                            $shared, $private, $pool, $closeToTransit, $gym, '$description');";             
+                            $shared, $private, $pool, $closeToTransit, $gym, '$description');";    
+     
         try {
             // prepare query for execution
             $stmt = $con->prepare($query);
@@ -81,7 +104,7 @@
         if (is_uploaded_file($temp)){
 
             $ext = pathinfo($_FILES["propImg"]["name"], PATHINFO_EXTENSION);
-            $photoServerName = "img/property/" . $propID . '.' . $ext;
+            $photoServerName = "img/property/" . $propID . '.' . ".png";
 
             // overwrite if file exists
             if(file_exists($photoServerName)) unlink($photoServerName);

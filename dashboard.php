@@ -34,7 +34,7 @@
   <?php
     include_once 'navbar.php';
     echo navbar(0);
-    include_once 'config/connection.php';
+    include 'config/connection.php';
     $firstname = $_SESSION['first_name'];
     $currentMemID = $_SESSION['mem_id'];
     $lastname = $_SESSION['last_name'];
@@ -225,7 +225,7 @@ EOT;
 
 EOT;
             foreach ($resultbook as $tuplebook){
-              echo $count2;
+              //echo $count2;
              
                 $bookingResult.="<tr><td>".$tuplebook['date_booked']."</td>";
                 $bookingResult.= "<td>".$tuplebook['period']."</td>";

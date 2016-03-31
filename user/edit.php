@@ -21,8 +21,9 @@
 
     <?php
         include_once '../navbar.php'; // include navbar
-        include_once '../config/connection.php';
+        include '../config/connection.php';
         echo navbar(1);
+        echo "<div class=\"container\">";
 
 
             $memID = -1;
@@ -127,11 +128,7 @@
         <div class="input-field col s1">
           <input id="year" type="number" name="year" value="<?php echo $tuple['year'];?>">
           <label class="active" for="year">year</label>
-<<<<<<< HEAD
-        </div>
-=======
          </div>
->>>>>>> 673c41879a5ece6c8a880e493807422c7c3f95a8
         <!-- About me -->
       <div class="row">
         <div class="input-field col s8" >
@@ -150,5 +147,6 @@
                   die(var_dump($e));
       }   // End of try/catch
   ?>
+  </div>
 </body>
 </html>

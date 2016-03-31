@@ -30,37 +30,30 @@
             if (!isset($_GET['id']) || $_GET['id'] == '') {
                 header ("Location: ../index.php");
             }
-            
+
             include_once '../navbar.php';
             echo navbar(1);
 
-
-
-            include_once '../config/connection.php';
+            include '../config/connection.php';
 
             $currentMemID = $_GET['id']; // profile of the member u are viewing
 
 
-            // not logged in
-            if (!isset($_SESSION['mem_id'])) {
-                echo "<script>Materialize.toast(\"You're not logged in! You will not be able to rate/comment on properties!\", 5000)</script>"; // display message
-            
-                echo <<<EOT
-                        <script>
-                            $(document).ready(function() {
-                                document.getElementById('strangerRating').disabled = true;
-                                $('#strangerRating').material_select();
+            // not owner or currently viewing profile or not logged in
+            if (!isset($_SESSION['mem_id']) || $_SESSION['mem_id'] != $_GET['id'] ) {
 
-                                document.getElementById('strangerCommentBtn').disabled = true;
-                                document.getElementById('strangerCommentBox').setAttribute("disabled", "true");
-                                document.getElementById('strangerCommentBox').value = "You must be logged in to comment!";
-                            });
-                        </script>
+                echo <<<EOT
+                <script>
+                    $(document).ready(function() {
+                        $('#editProfileBtn').hide();
+                    });
+                </script>
 EOT;
+
             }
 
 
-            $query = "SELECT first_name, last_name, aboutme, email, degree_name, phone_num, faculty_name 
+            $query = "SELECT first_name, last_name, aboutme, email, degree_name, phone_num, faculty_name
                       FROM  (`member` natural join `degree`) natural join `faculty` 
                       WHERE  mem_id = $currentMemID";
 
@@ -75,10 +68,10 @@ EOT;
                 $lastname = $result[0]['last_name'];
                 echo "<div class=\"container\"><ul class=\"collection with-header\">";
                 echo "<li class=\"collection-item avatar\">";
-                echo "<img src=\"../user/timmy.jpg\" alt=\"\" class=\"circle\">";
+                echo "<img src=\"../img/user/{$currentMemID}.png\" alt=\"\" class=\"circle\" style='margin-top: 20px;'>";
                 echo "<span class=\"title\"><h3>".$firstname." ".$lastname."</h3></span>";
          
-                echo "<a class=\"waves-effect waves-light btn\" href='user/edit.php'><i class=\"material-icons right\">edit</i>Edit Profile</a></li>";
+                echo "<a class=\"waves-effect waves-light btn\" href='edit.php' id=\"editProfileBtn\"><i class=\"material-icons right\">edit</i>Edit Profile</a></li>";
                 foreach ($result as $tuple){
                     echo "<br>";
                     echo "<div class=\"row\">";
@@ -121,7 +114,11 @@ EOT;
                 echo "<ul class=\"collection with-header\">";
                 if ($tuple['apt_num']!=Null){
                 echo "<li class=\"collection-item avatar\">";
-                echo "<img src=\"../img/property/{$tuple['prop_id']}.png\" alt=\"\" class=\"circle\">";
+
+                if (file_exists ( '../img/property/{$tuple[\'prop_id\']}.png' ))
+                    echo "<img src=\"../img/property/{$tuple['prop_id']}.png\" class=\"circle\">";
+                else
+                    echo "<img src=\"../img/property/default.png\" class=\"circle\">";
             
                 echo "<span class=\"title\"><a href='../property.php?id={$tuple['prop_id']}'>"
                      .$tuple['street_num']." ".$tuple['street_name'].

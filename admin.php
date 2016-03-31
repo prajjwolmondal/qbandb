@@ -55,7 +55,7 @@
         </div>
 
         <?php
-            include_once 'config/connection.php';
+            include 'config/connection.php';
             // if(isset($_POST['admin_action']) and isset(($_POST['mem_id']))){
             if (isset($_POST['inputType'], $_POST['member_id'])) {
                 $selectedMemID = $_POST['member_id'];

@@ -151,7 +151,7 @@
                     $tuple = $stmt->fetch(PDO::FETCH_ASSOC);
                     
                     // if logged in user does not match property owner
-                    if ($_SESSION['mem_id'] == $tuple['mem_id']) { 
+                    if ($_SESSION['mem_id'] != $tuple['mem_id']) { 
                         echo "<h3>Hey, you don't own this property!</h3>";
                         echo "<p>You don't have permission to edit this property.</p>";
                         echo "<script>Materialize.toast(\"You don't have permission to edit this property.\", 1500)</script>"; // display message

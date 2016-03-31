@@ -26,6 +26,13 @@
             </script>
             <script src="property.js"></script>
 
+            <style>
+                .greyedOut {
+                    color: lightgray;
+                    text-decoration: line-through;
+                }
+            </style>
+
         </head>
     <body>
 
@@ -62,7 +69,7 @@ EOT;
 
             echo "<div class=\"container\">";
 
-            include_once 'config/connection.php';
+            include 'config/connection.php';
 
 
             $currentMemID = -1;
@@ -74,7 +81,7 @@ EOT;
             $currentPropID = $_GET['id']; // ID of property currently viewing
             $date = new DateTime();
             $currentDate = $date->format('Y-m-d');
-
+             
             // add new stranger/property comment and rating to property
             if (isset($_POST['strangerComment']) and isset($_POST['user_comment']) and isset($_POST['user_rating'])) {
 
@@ -165,11 +172,28 @@ EOT;
 
                     $property_owner_id = $tuple['mem_id'];
 
+                    if (isset($_SESSION['mem_id']) && $_SESSION['mem_id'] == $property_owner_id ) {
+
+                        echo <<<EOT
+                        <script>
+                            $(document).ready(function() {
+                                $('#editPropertyBtn').show();
+                            });
+                        </script>
+EOT;
+                    }     
+
                     // Adding booking to database
                     if (isset($_POST['datePicked'])){
-                        if ($done==true){
+                        if ($done == true){
                             $bookingPeriod = $_POST['datePicked'];
                             // echo "<h1>".$bookingPeriod."</h1>";
+
+                            $bookingPeriod = htmlspecialchars($bookingPeriod);
+                            $currentDate = htmlspecialchars($currentDate);
+                            $bookingPeriod = date('Y-m-d', strtotime(str_replace('-', '/', $bookingPeriod)));
+                            $currentDate = date('Y-m-d', strtotime(str_replace('-', '/', $currentDate)));
+
                             $query = 
                                 "INSERT  into qbandb.booking 
                                  VALUES ($currentMemID, $currentPropID, $property_owner_id, '$bookingPeriod', 'Pending', '$currentDate');";
@@ -193,7 +217,11 @@ EOT;
                     <div class="col 4 offset-s1 ">
                         <h3> {$tuple['street_num']} {$tuple['street_name']} </h3>
                         <h4> {$tuple['postal_code']} </h4>
-                        
+                        <form action="edit-property.php?id={$currentPropID}" method="post">
+                        <button class="btn waves-effect waves-light" type="submit" id="editPropertyBtn" name="editPropertyBtn" style="display:none">Edit Property
+                        <i class="material-icons right">edit</i>
+                        </button>
+                        </form>
                     </div>
                     <div class="col 2 offset-s1">
                         <br/>
@@ -214,14 +242,22 @@ EOT;
                         <a href="#strangerRating" style="color: #26A69A;"><i class="material-icons">grade</i>{$tuple['overall_rating']}</a>
                     </div>
 
-
-
                 </div>
                 <div class="row collection-item">
                     <div class="col 4 collection-item avatar offset-s1">
                         <a href="user/profile.php?id={$tuple['mem_id']}">
                             <br/>
-                            <img src="img/user/{$tuple['mem_id']}" class="circle">
+EOT;
+
+                    if (file_exists ( 'img/user/{$tuple[\'mem_id\']}.png' ))
+                        echo "<img src=\"img/user/{$tuple['mem_id']}.png\" class=\"circle\">";
+                    else
+                        echo "<img src=\"img/user/default.png\" class=\"circle\">";
+
+
+
+
+                    echo <<<EOT
                             <h5> {$tuple['first_name']} {$tuple['last_name']} </h5>
                         </a>
                     </div>
@@ -269,7 +305,7 @@ EOT;
                 <div class="row collection-item">
                     <!-- Booking Form -->
                       <div class="row">
-                        <form class="col s12 offset-s3" action="<?php echo "property.php?id=".$currentPropID;?>" method="post">
+                        <form class="col s12 offset-s3" action="property.php?id={$currentPropID}" method="post">
                           <!-- Rating -->
                           <div class="input-field col s4">
                             <input type="date" name="datePicked" class="datepicker" id="datePicker" />
@@ -395,7 +431,6 @@ EOT;
                         }
                     }
                     echo <<<EOT
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -424,14 +459,13 @@ EOT;
             catch (Exception $e){
                 die(var_dump($e));
             }
-                echo "</ul></div>";
-    	?>
+?>
 
 <!-- Rating Form -->
   <div class="row">
     <form class="col s6 offset-s3" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]);?>" method="post">
         <!-- Rating -->
-        <div class="input-field col s4">
+        <div class="input-field col s6">
             <select id="strangerRating" class="validate" name="user_rating" required>
               <option value="" disabled selected>Select your rating</option>
               <option value="1">1</option>
@@ -459,6 +493,9 @@ EOT;
         </button>
     </form>
   </div>
+</div></div></ul>
+
+
 </div> <!-- end container -->
 
 </body>
