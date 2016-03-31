@@ -117,7 +117,7 @@
     }
 
 
-    header("Location: /qbandb/property.php?id={$propID}");
+    header("Location: /property.php?id={$propID}");
 
 
 
