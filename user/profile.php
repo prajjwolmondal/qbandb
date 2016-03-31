@@ -26,28 +26,26 @@
     <body>
 
     	<?php
+            // no property specified
+            if (!isset($_GET['id']) || $_GET['id'] == '') {
+                header ("Location: ../index.php");
+            }
+            
     	    include_once '../navbar.php';
-<<<<<<< HEAD
-            echo navbar(0);
+            echo navbar(1);
+
+
+
     	    include_once '../config/connection.php';
 
             $firstname = $_SESSION['first_name'];
             $currentMemID = $_SESSION['mem_id'];
             $lastname = $_SESSION['last_name'];
-    /*
-=======
-            echo navbar(1);
-    	    include_once '../config/connection.php';
 
-            // no property specified
-            if (!isset($_GET['id']) || $_GET['id'] == '') {
-                header ("Location: ../qbandb/index.php");
-            }
 
             // not logged in
             if (!isset($_SESSION['mem_id'])) {
                 echo "<script>Materialize.toast(\"You're not logged in! You will not be able to rate/comment on properties!\", 5000)</script>"; // display message
->>>>>>> 673c41879a5ece6c8a880e493807422c7c3f95a8
             
                 echo <<<EOT
                         <script>
@@ -62,27 +60,12 @@
                         </script>
 EOT;
             }
-<<<<<<< HEAD
-    */                 
 
-      //   <ul class="collection with-header">
-      //   <li class="collection-header"><h4>First Names</h4></li>
-      //   <li class="collection-item">Alvin</li>
-      //   <li class="collection-item">Alvin</li>
-      //   <li class="collection-item">Alvin</li>
-      //   <li class="collection-item">Alvin</li>
-      // </ul>
 
-    $query = "SELECT first_name, last_name, aboutme, email, degree_name, phone_num, faculty_name 
-              FROM  (`member` natural join `degree`) natural join `faculty` 
-              WHERE  mem_id = $currentMemID";
-=======
+            $query = "SELECT first_name, last_name, aboutme, email, degree_name, phone_num, faculty_name 
+                      FROM  (`member` natural join `degree`) natural join `faculty` 
+                      WHERE  mem_id = $currentMemID";
 
-            $currentMemID = $_GET['id']; // ID of property currently viewing
-
-            $query = 
-            "SELECT first_name, last_name, aboutme, email, degree_name, phone_num, faculty_name FROM  (`member` natural join `degree`) natural join `faculty` WHERE  mem_id = $currentMemID";
->>>>>>> 673c41879a5ece6c8a880e493807422c7c3f95a8
             try {
                 // prepare query for execution
                $stmt = $con->prepare($query);

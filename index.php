@@ -169,7 +169,7 @@ EOT;
       </div>
       <div class="footer-copyright">
         <div class="container">
-        © 2016 QBandB
+            &copy; 2016 QBandB
         </div>
       </div>
     </div>
