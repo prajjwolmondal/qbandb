@@ -25,22 +25,20 @@
         </head>
     <body>
 
-    	<?php
+        <?php
             // no property specified
             if (!isset($_GET['id']) || $_GET['id'] == '') {
                 header ("Location: ../index.php");
             }
             
-    	    include_once '../navbar.php';
+            include_once '../navbar.php';
             echo navbar(1);
 
 
 
-    	    include_once '../config/connection.php';
+            include_once '../config/connection.php';
 
-            $firstname = $_SESSION['first_name'];
-            $currentMemID = $_SESSION['mem_id'];
-            $lastname = $_SESSION['last_name'];
+            $currentMemID = $_GET['id']; // profile of the member u are viewing
 
 
             // not logged in
@@ -73,9 +71,11 @@ EOT;
                 $stmt->execute();
                 /* resultset */
                 $result = $stmt->fetchAll();
+                $firstname = $result[0]['first_name'];
+                $lastname = $result[0]['last_name'];
                 echo "<div class=\"container\"><ul class=\"collection with-header\">";
                 echo "<li class=\"collection-item avatar\">";
-                echo "<img src=\"../qbandb/user/timmy.jpg\" alt=\"\" class=\"circle\">";
+                echo "<img src=\"../user/timmy.jpg\" alt=\"\" class=\"circle\">";
                 echo "<span class=\"title\"><h3>".$firstname." ".$lastname."</h3></span>";
          
                 echo "<a class=\"waves-effect waves-light btn\" href='user/edit.php'><i class=\"material-icons right\">edit</i>Edit Profile</a></li>";
@@ -147,6 +147,6 @@ EOT;
             } catch (Exception $e){
                 die(var_dump($e));
             }
-    	?>
+        ?>
 </body>
 </html>
