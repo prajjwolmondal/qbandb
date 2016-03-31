@@ -166,7 +166,6 @@ EOT;
                 }
 
                 $done = true;
-                $tuple = $result[0];
 
                 foreach ($result as $tuple) {
 
@@ -346,27 +345,32 @@ EOT;
 
                     $commenter_id = $tuple['mem_id'];
 
+                    //echo $currentMemID;
+                    //echo $property_owner_id;
+                    $flag = false;
                     // while going through all comments,
                     // if the person logged in has made a comment (or is the owner),
                     // disable the rating/commenting
                     if ($currentMemID == $commenter_id || $currentMemID == $property_owner_id) {
+                        $flag = true;
                         echo <<<EOT
                 <script>
                     $(document).ready(function() {
+
                         document.getElementById('strangerRating').disabled = true;
                         $('#strangerRating').material_select();
 
                         document.getElementById('strangerCommentBtn').disabled = true;
                         document.getElementById('strangerCommentBox').setAttribute("disabled", "true");
-                            
+
 EOT;
                         $commentBoxValue = "";
 
                         if ($currentMemID == $commenter_id) {
-                            $commentBoxValue = "document.getElementById('strangerCommentBox').value = \"You already made a comment!\"";
+                            $commentBoxValue = "document.getElementById('strangerCommentBox').value = \"You already made a comment!\";";
                         }
                         if ($currentMemID == $property_owner_id) { // precedence over having already made a comment
-                            $commentBoxValue = "document.getElementById('strangerCommentBox').value = \"You cannot comment on your own property!\"";
+                            $commentBoxValue = "document.getElementById('strangerCommentBox').value = \"You cannot comment on your own property!\";";
                         }
 
                         echo <<<EOT
@@ -493,7 +497,7 @@ EOT;
         </button>
     </form>
   </div>
-</div></div></ul>
+</ul>
 
 
 </div> <!-- end container -->

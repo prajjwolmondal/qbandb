@@ -160,7 +160,7 @@
 
                 <div class="col s4">
                     <img src="images/yuna.jpg" alt="" class="circle">
-                    <span class="title">{$address}<br/>{$postCode}</span>
+                    <span class="title"><a href=../property.php?id={$tuple['prop_id']}>{$address}</a><br/>{$postCode}</span>
                 </div>
                 <div class="col s3 offset-s9">
                     <a href="#!" class="secondary-content"><i class="material-icons">grade</i> {$rating}</a>
