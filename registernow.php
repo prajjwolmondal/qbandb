@@ -6,25 +6,6 @@
 
  	include_once 'config/connection.php';
 
-	$passErr = $matchpassErr = "";
-
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	  if (empty($_POST['repass'])) {
-	    $repassErr = "please re-enter your password";
-	  } else {
-	    $fname = test_input($_POST["fname"]);
-	  }
-
-	  if ($_POST['pass'] != $_POST['repass']){
-	  	$matchpassErr = "please enter a valid last name";
-	  } else {
-	  	$fname = test_input($_POST["lname"]);
-	  }
-
-
-
-	}
-
 
 	$fname = $_POST['fname'];
 	$lname = $_POST['lname'];
@@ -45,7 +26,7 @@
     $stmt1->execute();
     $result=$stmt1->fetchAll();
     foreach ($result as $tuple){
-    	$memid=$tuple['count(mem_id)'];
+    	$memid=$tuple['max(mem_id)'];
 	}
 
 

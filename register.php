@@ -8,6 +8,7 @@
     <!-- Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- JS animations -->
+  
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<!-- Compiled and minified JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
@@ -16,7 +17,8 @@
       $(document).ready(function() {
       $('select').material_select();
       }); </script>
-   
+
+
   
     </head>
 <body>
@@ -27,16 +29,17 @@
 	?>
 <!-- Register Form -->
   <br><br>
+  <div class="container">
   <div class="row">
-    <form class="col s8 offset-s2" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+    <form id="registerform" class="col s8 offset-s2" action="registernow.php" method="post">
       <!-- Name -->
       <div class="row">
         <div class="input-field col s6">
-          <input id="firstname" type="text" length="40" name="fname" required>
+          <input id="firstname" type="text" length="40" maxlength="40" name="fname" required>
           <label class="active"  for="firstname">first name</label>
         </div>
         <div class="input-field col s6">
-          <input id="lastname" type="text" length="40" name="lname" required>
+          <input id="lastname" type="text" length="40" maxlength="40" name="lname" required>
           <label class="active"  for="lastname">last name</label>
         </div>
       </div>
@@ -58,13 +61,13 @@
           <label class="active" data-error="invalid email" for="email">email</label>
         </div>
          <div class="input-field col s6">
-          <input id="phonenum" type="tel" name="phone">
+          <input id="phonenum" type="tel" name="phone" class="validate">
           <label class="active" for="phonenum">phone number</label>
         </div>
       </div>
       <!-- Faculty -->
       <div class="input-field col s4">
-        <select name="faculty" required>
+        <select name="faculty" id="faculty" class="validate" required>
           <option value="" disabled selected>select your faculty</option>
           <option value="1">Computing</option>
           <option value="2">Engineering</option>
@@ -76,7 +79,7 @@
       </div>
       <!-- Degree -->
       <div class="input-field col s4">
-        <select name="degree" required>
+        <select name="degree" id="faculty" required>
           <option value="" disabled selected>select your degree</option>
           <option value="1">B.Comp</option>
           <option value="2">B.Eng</option>
@@ -93,24 +96,24 @@
         <!-- About me -->
       <div class="row">
         <div class="input-field col s8" >
-          <textarea id="aboutme" length="500" name="about" class="materialize-textarea" required></textarea>
+          <textarea id="aboutme" maxlength="500" length="500" name="about" class="materialize-textarea" required></textarea>
           <label for="aboutme">about me</label>
         </div>
       </div>
       <!-- Credit Card Info -->
       <div class="row">
         <div class="input-field col s3" >
-          <input id="credit" type="text" class="validate" name="credit" required>
-          <label class="active" data-error="invalid email" for="credit">credit card number</label>
+          <input id="credit" type="text" class="validate" name="credit" maxlength="16" required>
+          <label class="active" for="credit">credit card number</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s1" >
-          <input id="expiry" type="text" class="validate" name="expiry" required>
+          <input id="expiry" type="text" class="validate" name="expiry" maxlength="4" required>
           <label class="active" for="expiry">expiry</label>
         </div>
         <div class="input-field col s1" >
-          <input id="cvv" type="text" class="validate" name="cvv" required>
+          <input id="cvv" type="text" class="validate" name="cvv" maxlength="3" required>
           <label class="active" for="cvv">cvv</label>
         </div>
       </div>
@@ -120,7 +123,8 @@
       </button>
     </form>
   </div>
-
+  </div>
+  <script src="checkPass.js"></script>
  
 
 </body>
