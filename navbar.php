@@ -179,7 +179,10 @@ function submitLoginLogout () {
 
 		// send to index.php if current page is dashboard or admin
 		$currentPage = htmlspecialchars($_SERVER['REQUEST_URI']);
-		if ($currentPage == '/qbandb/dashboard.php' || $currentPage == '/qbandb/admin.php') {
+        //echo $currentPage;
+
+		//if ($currentPage == '/qbandb/dashboard.php' || $currentPage == '/qbandb/admin.php') { // localhost
+        if ($currentPage == '/dashboard.php' || $currentPage == '/admin.php') { //server
 			header("Location: /qbandb/index.php");
 		}
     }
