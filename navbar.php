@@ -183,7 +183,8 @@ function submitLoginLogout () {
 
 		//if ($currentPage == '/qbandb/dashboard.php' || $currentPage == '/qbandb/admin.php') { // localhost
         if ($currentPage == '/dashboard.php' || $currentPage == '/admin.php') { //server
-			header("Location: /qbandb/index.php");
+			//header("Location: /qbandb/index.php"); // localhost
+            header("Location: /index.php"); // server
 		}
     }
     
