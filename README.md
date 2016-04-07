@@ -7,7 +7,7 @@ Created at Queen's University by [@jayzoww](https://github.com/jayzoww), [@thepo
 Viewable at http://qandb.azurewebsites.net/.
 
 ## Technologies used
-* Microsoft Azure (https://azure.microsoft.com/‎) for hosting and syncing with this repo
+* Microsoft Azure (https://azure.microsoft.com/) for hosting and syncing with this repo
 * MySQL and MySQL Workbench for database management
 * jQuery (http://jquery.com/) for easier DOM manipulation and traversal
 * Materialize (http://materializecss.com/) for a responsive front-end framework
