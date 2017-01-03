@@ -4,8 +4,6 @@ Airbnb for Queen's alumnae. Final project for CISC 332.
 
 Created at Queen's University by [@jayzoww](https://github.com/jayzoww), [@theposter](https://github.com/theposter), and [@skhzhang](https://github.com/skhzhang).
 
-Viewable at http://qandb.azurewebsites.net/.
-
 ## Technologies used
 * Microsoft Azure (https://azure.microsoft.com/) for hosting and syncing with this repo
 * MySQL and MySQL Workbench for database management
